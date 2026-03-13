@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Доступные заказы</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-info">
+    <div class="container">
+        <a class="navbar-brand" href="#">🍽️ Goulash Clone - Курьер</a>
+        <div class="navbar-nav">
+            <a class="nav-link active" href="/courier/orders">Доступные</a>
+            <a class="nav-link" href="/courier/my-deliveries">Мои доставки</a>
+            <a class="nav-link" href="/logout">Выйти</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <h2 class="mb-4">Готовые к доставке заказы</h2>
+    <div class="row" th:if="${not #lists.isEmpty(readyOrders)}">
+        <div class="col-md-6 mb-4" th:each="order : ${readyOrders}">
+            <div class="card border-success">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Заказ #<span th:text="${order.id}">1</span></h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Клиент:</strong> <span th:text="${order.clientName}">Иван</span></p>
+                    <p><strong>Телефон:</strong> <span th:text="${order.clientPhone}">+7...</span></p>
+                    <p><strong>Адрес:</strong> <span th:text="${order.address}">ул. Пушкина</span></p>
+                    <p><strong>Сумма:</strong> <span th:text="${order.totalAmount} + ' ₽'">1000 ₽</span></p>
+
+                    <form th:action="@{'/courier/order/' + ${order.id} + '/take'}" method="post">
+                        <button type="submit" class="btn btn-success w-100">
+                            🛵 Взять в доставку
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${#lists.isEmpty(readyOrders)}" class="alert alert-info">
+        Нет готовых к доставке заказов
+    </div>
+</div>
+</body>
+</html>

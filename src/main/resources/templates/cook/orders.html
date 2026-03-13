@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Кухня</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-success">
+    <div class="container">
+        <a class="navbar-brand" href="#">🍽️ Goulash Clone - Кухня</a>
+        <div class="navbar-nav">
+            <a class="nav-link active" href="/cook/orders">Заказы</a>
+            <a class="nav-link" href="/logout">Выйти</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <h2 class="mb-4">Новые заказы (нужно готовить)</h2>
+    <div class="row" th:if="${not #lists.isEmpty(confirmedOrders)}">
+        <div class="col-md-6 mb-4" th:each="order : ${confirmedOrders}">
+            <div class="card border-primary">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Заказ #<span th:text="${order.id}">1</span></h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Клиент:</strong> <span th:text="${order.clientName}">Иван</span></p>
+                    <p><strong>Время заказа:</strong> <span th:text="${#temporals.format(order.createdAt, 'HH:mm')}">12:00</span></p>
+
+                    <h6>Состав заказа:</h6>
+                    <ul class="list-group mb-3">
+                        <li class="list-group-item" th:each="item : ${order.items}">
+                            <span th:text="${item.dish.name}">Пицца</span> x
+                            <span th:text="${item.quantity}">1</span>
+                        </li>
+                    </ul>
+
+                    <form th:action="@{'/cook/order/' + ${order.id} + '/start-cooking'}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-primary">
+                            👨‍🍳 Начать готовить
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${#lists.isEmpty(confirmedOrders)}" class="alert alert-info">
+        Нет новых заказов
+    </div>
+
+    <h2 class="mb-4 mt-4">Готовится</h2>
+    <div class="row" th:if="${not #lists.isEmpty(cookingOrders)}">
+        <div class="col-md-6 mb-4" th:each="order : ${cookingOrders}">
+            <div class="card border-warning">
+                <div class="card-header bg-warning text-white">
+                    <h5 class="mb-0">Заказ #<span th:text="${order.id}">1</span></h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Клиент:</strong> <span th:text="${order.clientName}">Иван</span></p>
+
+                    <h6>Состав заказа:</h6>
+                    <ul class="list-group mb-3">
+                        <li class="list-group-item" th:each="item : ${order.items}">
+                            <span th:text="${item.dish.name}">Пицца</span> x
+                            <span th:text="${item.quantity}">1</span>
+                        </li>
+                    </ul>
+
+                    <form th:action="@{'/cook/order/' + ${order.id} + '/ready'}" method="post">
+                        <button type="submit" class="btn btn-success">
+                            ✅ Готово
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${#lists.isEmpty(cookingOrders)}" class="alert alert-info">
+        Нет заказов в процессе готовки
+    </div>
+</div>
+</body>
+</html>
