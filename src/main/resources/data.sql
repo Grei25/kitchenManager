@@ -11,8 +11,10 @@ DBCC CHECKIDENT ('orders', RESEED, 0);
 DBCC CHECKIDENT ('order_items', RESEED, 0);
 
 -- Добавляем пользователей
+
 INSERT INTO users (username, password, full_name, phone, role, created_at) VALUES
     ('admin', '$2a$10$rRy8GSJ5QyqKqZVZQqQqQeQqQqQqQqQqQqQqQqQqQqQqQqQqQq', 'Администратор', '+7 (999) 111-11-11', 'ADMIN', GETDATE());
+
 
 INSERT INTO users (username, password, full_name, phone, role, created_at) VALUES
     ('cook', '$2a$10$rRy8GSJ5QyqKqZVZQqQqQeQqQqQqQqQqQqQqQqQqQqQqQqQqQq', 'Повар Иван', '+7 (999) 222-22-22', 'COOK', GETDATE());
@@ -22,46 +24,46 @@ INSERT INTO users (username, password, full_name, phone, role, created_at) VALUE
 
 -- Добавляем блюда с НОВЫМИ ССЫЛКАМИ (Pexels - быстрее)
 INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
-    ('Маргарита', 'Томатный соус, моцарелла, базилик, оливковое масло', 450.00, 'Пицца', 1, 'https://images.pexels.com/photos/2147491/pexels-photo-2147491.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop');
+    ('Маргарита', 'Томатный соус, моцарелла, базилик, оливковое масло', 450.00, 'Пицца', 1, 'https://img.freepik.com/premium-photo/pizza-margherita-stone-background_156140-6933.jpg?semt=ais_hybrid&w=740');
 
 INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
-    ('Пепперони', 'Томатный соус, моцарелла, пепперони, орегано', 550.00, 'Пицца', 1, 'https://images.pexels.com/photos/803290/pexels-photo-803290.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop');
+    ('Пепперони', 'Томатный соус, моцарелла, пепперони, орегано', 550.00, 'Пицца', 1, 'https://avatars.mds.yandex.net/i?id=d7875153a89aefbb8b486cc1d020d5d8_l-5378240-images-thumbs&n=13');
 
 INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
-    ('Борщ', 'Украинский борщ с говядиной, свеклой, сметаной', 320.00, 'Супы', 1, 'https://images.pexels.com/photos/539451/pexels-photo-539451.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop');
+    ('Борщ', 'Украинский борщ с говядиной, свеклой, сметаной', 320.00, 'Супы', 1, 'https://avatars.mds.yandex.net/i?id=9b67e56c2ff5f96af31d0b134b971fbf_l-5289313-images-thumbs&n=13');
 
 INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
-    ('Тыквенный суп', 'Крем-суп из тыквы с имбирем и сливками', 280.00, 'Супы', 1, 'https://images.pexels.com/photos/566566/pexels-photo-566566.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop');
+    ('Тыквенный суп', 'Крем-суп из тыквы с имбирем и сливками', 280.00, 'Супы', 1, 'https://avatars.mds.yandex.net/get-shedevrum/14745968/img_a7cf55c883df11ef87143e0b8b3cb0e7/orig');
 
 INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
-    ('Цезарь с курицей', 'Салат с курицей, салатом романо, пармезаном и соусом цезарь', 380.00, 'Салаты', 1, 'https://images.pexels.com/photos/1213710/pexels-photo-1213710.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop');
+    ('Цезарь с курицей', 'Салат с курицей, салатом романо, пармезаном и соусом цезарь', 380.00, 'Салаты', 1, 'https://fissman.ru/upload/dev2fun.imagecompress/webp/resize_cache/iblock/ee6/ew7yyv29zqejeihxdvrqlgi3knc2yk79/800_800_1/salat_cezar.webp');
 
 INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
-    ('Греческий салат', 'Свежие овощи, фета, оливки, оливковое масло', 320.00, 'Салаты', 1, 'https://images.pexels.com/photos/1213711/pexels-photo-1213711.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop');
+    ('Греческий салат', 'Свежие овощи, фета, оливки, оливковое масло', 320.00, 'Салаты', 1, 'https://avatars.mds.yandex.net/i?id=1215c4f9efa0fe8db3d464210e13a500_l-9244753-images-thumbs&n=13');
 
 INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
-    ('Паста Карбонара', 'Спагетти с беконом в сливочном соусе', 420.00, 'Горячее', 1, 'https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop');
+    ('Паста Карбонара', 'Спагетти с беконом в сливочном соусе', 420.00, 'Горячее', 1, 'https://images.mid-day.com/images/images/2023/sep/International-Bacon-Day-2023-easy-recipes.jpg');
 
 INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
-    ('Котлета по-киевски', 'Куриная котлета с маслом, картофельное пюре', 390.00, 'Горячее', 1, 'https://images.pexels.com/photos/6210876/pexels-photo-6210876.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop');
+    ('Котлета по-киевски', 'Куриная котлета с маслом, картофельное пюре', 390.00, 'Горячее', 1, 'https://masterpiecer-images.s3.yandex.net/58dafa20765c11ee978d363fac71b015:upscaled');
 
 INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
-    ('Рис с овощами', 'Рис с болгарским перцем, морковью и горошком', 250.00, 'Горячее', 1, 'https://images.pexels.com/photos/723198/pexels-photo-723198.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop');
+    ('Рис с овощами', 'Рис с болгарским перцем, морковью и горошком', 250.00, 'Горячее', 1, 'https://avatars.mds.yandex.net/get-shedevrum/14769603/img_7ca51139f62211ef9419e680f4260773/orig');
 
 INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
-    ('Чай черный', 'Черный чай с лимоном', 100.00, 'Напитки', 1, 'https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop');
+    ('Чай черный', 'Черный чай с лимоном', 100.00, 'Напитки', 1, 'https://avatars.mds.yandex.net/get-mpic/11404302/2a0000018c888ef291c64167e4b00dbec99a/orig');
 
 INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
-    ('Кофе американо', 'Американо', 150.00, 'Напитки', 1, 'https://images.pexels.com/photos/312418/pexels-photo-312418.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop');
+    ('Кофе американо', 'Американо', 150.00, 'Напитки', 1, 'https://cdn.shopify.com/s/files/1/0660/8571/6215/files/Reduce_Risk_of_Diabetes.jpg?v=1686250060');
 
 INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
-    ('Морс клюквенный', 'Домашний клюквенный морс', 120.00, 'Напитки', 1, 'https://images.pexels.com/photos/96974/pexels-photo-96974.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop');
+    ('Морс клюквенный', 'Домашний клюквенный морс', 120.00, 'Напитки', 1, 'https://avatars.mds.yandex.net/i?id=28599b2b745491433e6fe961c1189965_l-5305106-images-thumbs&n=13');
 
 INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
-    ('Чизкейк', 'Нью-йоркский чизкейк с ягодным соусом', 280.00, 'Десерты', 1, 'https://images.pexels.com/photos/4109998/pexels-photo-4109998.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop');
+    ('Чизкейк', 'Нью-йоркский чизкейк с ягодным соусом', 280.00, 'Десерты', 1, 'https://avatars.mds.yandex.net/get-sprav-products/11530991/2a0000018ef6668a7779ba03145f7c2dfd5b/XXL');
 
 INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
-    ('Тирамису', 'Классический итальянский десерт', 320.00, 'Десерты', 1, 'https://images.pexels.com/photos/239581/pexels-photo-239581.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop');
+    ('Тирамису', 'Классический итальянский десерт', 320.00, 'Десерты', 1, 'https://www.koolinar.ru/all_image/article/4/4391/article-304135e2-a959-4e02-b311-a373f1343ae4_large.jpg');
 
 -- Добавляем тестовый заказ
 INSERT INTO orders (client_name, client_phone, address, status, total_amount, created_at, updated_at) VALUES

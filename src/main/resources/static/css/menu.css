@@ -1,17 +1,530 @@
+/*:root {*/
+/*    --primary-color: #dc3545;*/
+/*    --secondary-color: #ffc107;*/
+/*    --dark-color: #343a40;*/
+/*    --light-color: #f8f9fa;*/
+/*    --success-color: #28a745;*/
+/*    --danger-color: #dc3545;*/
+/*    --warning-color: #ffc107;*/
+/*    --info-color: #17a2b8;*/
+/*}*/
+
+/*!* Общие стили *!*/
+/*body {*/
+/*    background: var(--light-color);*/
+/*    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;*/
+/*    margin: 0;*/
+/*    padding: 0;*/
+/*}*/
+
+/*!* Hero секция *!*/
+/*.hero-section {*/
+/*    background: linear-gradient(135deg, var(--primary-color) 0%, #b02a37 100%);*/
+/*    color: white;*/
+/*    padding: 60px 0;*/
+/*    margin-bottom: 40px;*/
+/*    text-align: center;*/
+/*    box-shadow: 0 4px 15px rgba(0,0,0,0.1);*/
+/*}*/
+
+/*.hero-section h1 {*/
+/*    font-size: 3.5rem;*/
+/*    font-weight: bold;*/
+/*    margin-bottom: 20px;*/
+/*    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);*/
+/*    animation: fadeInDown 1s ease;*/
+/*}*/
+
+/*.hero-section .lead {*/
+/*    font-size: 1.3rem;*/
+/*    opacity: 0.9;*/
+/*    animation: fadeInUp 1s ease;*/
+/*}*/
+
+/*!* Навигация *!*/
+/*.navbar-custom {*/
+/*    background: white;*/
+/*    box-shadow: 0 2px 10px rgba(0,0,0,0.1);*/
+/*    padding: 15px 0;*/
+/*    position: sticky;*/
+/*    top: 0;*/
+/*    z-index: 1000;*/
+/*}*/
+
+/*.brand-logo {*/
+/*    font-size: 1.8rem;*/
+/*    font-weight: bold;*/
+/*    color: var(--primary-color);*/
+/*    text-decoration: none;*/
+/*    transition: color 0.3s;*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    gap: 10px;*/
+/*}*/
+
+/*.brand-logo:hover {*/
+/*    color: #b02a37;*/
+/*}*/
+
+/*.brand-logo i {*/
+/*    font-size: 2rem;*/
+/*}*/
+
+/*!* Виджет корзины *!*/
+/*.cart-widget {*/
+/*    background: var(--light-color);*/
+/*    padding: 10px 20px;*/
+/*    border-radius: 30px;*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    gap: 10px;*/
+/*    transition: all 0.3s;*/
+/*    border: 1px solid #e9ecef;*/
+/*}*/
+
+/*.cart-widget:hover {*/
+/*    background: white;*/
+/*    box-shadow: 0 2px 10px rgba(220, 53, 69, 0.1);*/
+/*}*/
+
+/*.cart-count {*/
+/*    background: var(--primary-color);*/
+/*    color: white;*/
+/*    border-radius: 50%;*/
+/*    padding: 2px 8px;*/
+/*    font-size: 14px;*/
+/*    font-weight: bold;*/
+/*    min-width: 24px;*/
+/*    text-align: center;*/
+/*}*/
+
+/*!* Категории *!*/
+/*.category-nav {*/
+/*    background: white;*/
+/*    border-radius: 50px;*/
+/*    padding: 10px;*/
+/*    box-shadow: 0 2px 15px rgba(0,0,0,0.05);*/
+/*    margin-bottom: 40px;*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    flex-wrap: wrap;*/
+/*    gap: 10px;*/
+/*    position: sticky;*/
+/*    top: 80px;*/
+/*    z-index: 900;*/
+/*}*/
+
+/*.category-btn {*/
+/*    border: none;*/
+/*    background: none;*/
+/*    padding: 12px 25px;*/
+/*    border-radius: 30px;*/
+/*    font-weight: 500;*/
+/*    color: #666;*/
+/*    transition: all 0.3s;*/
+/*    cursor: pointer;*/
+/*    font-size: 1rem;*/
+/*}*/
+
+/*.category-btn:hover {*/
+/*    background: var(--light-color);*/
+/*    color: var(--primary-color);*/
+/*    transform: translateY(-2px);*/
+/*}*/
+
+/*.category-btn.active {*/
+/*    background: var(--primary-color);*/
+/*    color: white;*/
+/*    box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);*/
+/*}*/
+
+/*!* Карточки блюд *!*/
+/*.dish-card {*/
+/*    background: white;*/
+/*    border: none;*/
+/*    border-radius: 20px;*/
+/*    overflow: hidden;*/
+/*    box-shadow: 0 5px 20px rgba(0,0,0,0.05);*/
+/*    transition: all 0.3s ease;*/
+/*    height: 100%;*/
+/*    position: relative;*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*}*/
+
+/*.dish-card:hover {*/
+/*    transform: translateY(-8px);*/
+/*    box-shadow: 0 15px 35px rgba(220, 53, 69, 0.15);*/
+/*}*/
+
+/*.dish-image {*/
+/*    height: 200px;*/
+/*    background: linear-gradient(135deg, var(--light-color), #e9ecef);*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+/*    font-size: 4rem;*/
+/*    color: var(--primary-color);*/
+/*    position: relative;*/
+/*    overflow: hidden;*/
+/*}*/
+
+/*.dish-image::after {*/
+/*    content: '';*/
+/*    position: absolute;*/
+/*    bottom: 0;*/
+/*    left: 0;*/
+/*    right: 0;*/
+/*    height: 4px;*/
+/*    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));*/
+/*    transform: translateX(-100%);*/
+/*    transition: transform 0.3s;*/
+/*}*/
+
+/*.dish-card:hover .dish-image::after {*/
+/*    transform: translateX(0);*/
+/*}*/
+
+/*.dish-body {*/
+/*    padding: 20px;*/
+/*    flex: 1;*/
+/*}*/
+
+/*.dish-title {*/
+/*    font-size: 1.3rem;*/
+/*    font-weight: bold;*/
+/*    margin-bottom: 10px;*/
+/*    color: var(--dark-color);*/
+/*    transition: color 0.3s;*/
+/*}*/
+
+/*.dish-card:hover .dish-title {*/
+/*    color: var(--primary-color);*/
+/*}*/
+
+/*.dish-description {*/
+/*    color: #666;*/
+/*    font-size: 0.95rem;*/
+/*    margin-bottom: 15px;*/
+/*    line-height: 1.6;*/
+/*}*/
+
+/*.dish-footer {*/
+/*    display: flex;*/
+/*    justify-content: space-between;*/
+/*    align-items: center;*/
+/*    padding: 15px 20px;*/
+/*    background: var(--light-color);*/
+/*    border-top: 1px solid #e9ecef;*/
+/*    margin-top: auto;*/
+/*}*/
+
+/*.dish-price {*/
+/*    font-size: 1.4rem;*/
+/*    font-weight: bold;*/
+/*    color: var(--primary-color);*/
+/*}*/
+
+/*!* Кнопка добавления *!*/
+/*.add-to-cart-btn {*/
+/*    background: var(--primary-color);*/
+/*    color: white;*/
+/*    border: none;*/
+/*    padding: 10px 20px;*/
+/*    border-radius: 30px;*/
+/*    font-size: 0.95rem;*/
+/*    font-weight: 500;*/
+/*    transition: all 0.3s;*/
+/*    cursor: pointer;*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    gap: 8px;*/
+/*}*/
+
+/*.add-to-cart-btn:hover {*/
+/*    background: #b02a37;*/
+/*    transform: scale(1.05);*/
+/*    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);*/
+/*}*/
+
+/*.add-to-cart-btn i {*/
+/*    font-size: 1.1rem;*/
+/*}*/
+
+/*!* Пустая корзина *!*/
+/*.empty-cart-message {*/
+/*    text-align: center;*/
+/*    padding: 60px 20px;*/
+/*    background: white;*/
+/*    border-radius: 20px;*/
+/*    box-shadow: 0 5px 20px rgba(0,0,0,0.05);*/
+/*    margin: 40px 0;*/
+/*}*/
+
+/*.empty-cart-message i {*/
+/*    font-size: 5rem;*/
+/*    color: #ccc;*/
+/*    margin-bottom: 20px;*/
+/*}*/
+
+/*.empty-cart-message p {*/
+/*    font-size: 1.2rem;*/
+/*    color: #666;*/
+/*}*/
+
+/*!* Тост-уведомление *!*/
+/*.toast-notification {*/
+/*    position: fixed;*/
+/*    top: 20px;*/
+/*    right: 20px;*/
+/*    z-index: 9999;*/
+/*}*/
+
+/*.toast {*/
+/*    min-width: 250px;*/
+/*    border-radius: 10px;*/
+/*    box-shadow: 0 5px 20px rgba(0,0,0,0.15);*/
+/*}*/
+
+/*!* Анимации *!*/
+/*@keyframes fadeInDown {*/
+/*    from {*/
+/*        opacity: 0;*/
+/*        transform: translateY(-30px);*/
+/*    }*/
+/*    to {*/
+/*        opacity: 1;*/
+/*        transform: translateY(0);*/
+/*    }*/
+/*}*/
+
+/*@keyframes fadeInUp {*/
+/*    from {*/
+/*        opacity: 0;*/
+/*        transform: translateY(30px);*/
+/*    }*/
+/*    to {*/
+/*        opacity: 1;*/
+/*        transform: translateY(0);*/
+/*    }*/
+/*}*/
+
+/*@keyframes slideIn {*/
+/*    from {*/
+/*        transform: translateX(100%);*/
+/*        opacity: 0;*/
+/*    }*/
+/*    to {*/
+/*        transform: translateX(0);*/
+/*        opacity: 1;*/
+/*    }*/
+/*}*/
+
+/*.toast.show {*/
+/*    animation: slideIn 0.3s ease;*/
+/*}*/
+
+/*@keyframes pulse {*/
+/*    0% {*/
+/*        transform: scale(1);*/
+/*    }*/
+/*    50% {*/
+/*        transform: scale(1.05);*/
+/*    }*/
+/*    100% {*/
+/*        transform: scale(1);*/
+/*    }*/
+/*}*/
+
+/*.pulse {*/
+/*    animation: pulse 1s ease;*/
+/*}*/
+
+/*!* Адаптивность *!*/
+/*@media (max-width: 768px) {*/
+/*    .hero-section h1 {*/
+/*        font-size: 2.5rem;*/
+/*    }*/
+
+/*    .hero-section .lead {*/
+/*        font-size: 1.1rem;*/
+/*    }*/
+
+/*    .category-nav {*/
+/*        border-radius: 20px;*/
+/*        padding: 10px;*/
+/*        top: 70px;*/
+/*    }*/
+
+/*    .category-btn {*/
+/*        padding: 8px 15px;*/
+/*        font-size: 0.9rem;*/
+/*    }*/
+
+/*    .dish-image {*/
+/*        height: 160px;*/
+/*        font-size: 3rem;*/
+/*    }*/
+
+/*    .dish-title {*/
+/*        font-size: 1.1rem;*/
+/*    }*/
+
+/*    .dish-description {*/
+/*        font-size: 0.85rem;*/
+/*    }*/
+
+/*    .dish-price {*/
+/*        font-size: 1.2rem;*/
+/*    }*/
+
+/*    .add-to-cart-btn {*/
+/*        padding: 8px 15px;*/
+/*        font-size: 0.85rem;*/
+/*    }*/
+/*}*/
+
+/*@media (max-width: 576px) {*/
+/*    .brand-logo {*/
+/*        font-size: 1.4rem;*/
+/*    }*/
+
+/*    .cart-widget {*/
+/*        padding: 8px 15px;*/
+/*    }*/
+
+/*    .category-nav {*/
+/*        flex-wrap: nowrap;*/
+/*        overflow-x: auto;*/
+/*        justify-content: flex-start;*/
+/*        -webkit-overflow-scrolling: touch;*/
+/*    }*/
+
+/*    .category-btn {*/
+/*        white-space: nowrap;*/
+/*    }*/
+
+/*    .dish-card {*/
+/*        margin-bottom: 20px;*/
+/*    }*/
+/*}*/
+
+/*!* Стили для скроллбара *!*/
+/*::-webkit-scrollbar {*/
+/*    width: 8px;*/
+/*    height: 8px;*/
+/*}*/
+
+/*::-webkit-scrollbar-track {*/
+/*    background: #f1f1f1;*/
+/*    border-radius: 10px;*/
+/*}*/
+
+/*::-webkit-scrollbar-thumb {*/
+/*    background: var(--primary-color);*/
+/*    border-radius: 10px;*/
+/*}*/
+
+/*::-webkit-scrollbar-thumb:hover {*/
+/*    background: #b02a37;*/
+/*}*/
+
+/*!* Дополнительные эффекты *!*/
+/*.dish-card {*/
+/*    position: relative;*/
+/*    overflow: hidden;*/
+/*}*/
+
+/*.dish-card::before {*/
+/*    content: '';*/
+/*    position: absolute;*/
+/*    top: 0;*/
+/*    left: 0;*/
+/*    right: 0;*/
+/*    height: 4px;*/
+/*    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));*/
+/*    transform: scaleX(0);*/
+/*    transition: transform 0.3s;*/
+/*    z-index: 1;*/
+/*}*/
+
+/*.dish-card:hover::before {*/
+/*    transform: scaleX(1);*/
+/*}*/
+
+/*!* Бейджи *!*/
+/*.badge {*/
+/*    padding: 5px 10px;*/
+/*    border-radius: 20px;*/
+/*    font-size: 0.8rem;*/
+/*    font-weight: 500;*/
+/*}*/
+
+/*.badge.bg-secondary {*/
+/*    background: var(--light-color) !important;*/
+/*    color: var(--dark-color);*/
+/*    border: 1px solid #dee2e6;*/
+/*}*/
+
+/*!* Стили для загрузки *!*/
+/*.loading-spinner {*/
+/*    display: inline-block;*/
+/*    width: 40px;*/
+/*    height: 40px;*/
+/*    border: 3px solid var(--light-color);*/
+/*    border-top-color: var(--primary-color);*/
+/*    border-radius: 50%;*/
+/*    animation: spin 1s linear infinite;*/
+/*}*/
+
+/*@keyframes spin {*/
+/*    to {*/
+/*        transform: rotate(360deg);*/
+/*    }*/
+/*}*/
+
+/*!* Стили для уведомлений *!*/
+/*.alert {*/
+/*    border-radius: 12px;*/
+/*    border: none;*/
+/*    padding: 15px 20px;*/
+/*    margin-bottom: 20px;*/
+/*    box-shadow: 0 4px 12px rgba(0,0,0,0.05);*/
+/*}*/
+
+/*.alert-success {*/
+/*    background: linear-gradient(135deg, #d4edda, #c3e6cb);*/
+/*    color: #155724;*/
+/*}*/
+
+/*.alert-danger {*/
+/*    background: linear-gradient(135deg, #f8d7da, #f5c6cb);*/
+/*    color: #721c24;*/
+/*}*/
+
+/*.alert-warning {*/
+/*    background: linear-gradient(135deg, #fff3cd, #ffeeba);*/
+/*    color: #856404;*/
+/*}*/
+
+/*.alert-info {*/
+/*    background: linear-gradient(135deg, #d1ecf1, #bee5eb);*/
+/*    color: #0c5460;*/
+/*}*/
 :root {
-    --primary-color: #dc3545;
-    --secondary-color: #ffc107;
-    --dark-color: #343a40;
-    --light-color: #f8f9fa;
-    --success-color: #28a745;
-    --danger-color: #dc3545;
-    --warning-color: #ffc107;
-    --info-color: #17a2b8;
+    --primary-color: #5a4e3e;        /* тёмно-бежевый для акцентов */
+    --secondary-color: #c0b6a8;      /* светло-серо-бежевый */
+    --dark-color: #4a3f32;            /* тёмный для текста */
+    --light-color: rgba(128, 128, 128, 0.05);  /* прозрачный серый */
+    --success-color: #6b5f4f;
+    --danger-color: #8b3a3a;
+    --warning-color: #c0a86a;
+    --info-color: #6a8b8b;
 }
 
 /* Общие стили */
 body {
-    background: var(--light-color);
+    background: #f5f0e8;  /* бежевый фон */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
@@ -19,32 +532,40 @@ body {
 
 /* Hero секция */
 .hero-section {
-    background: linear-gradient(135deg, var(--primary-color) 0%, #b02a37 100%);
-    color: white;
+    background: rgba(128, 128, 128, 0.05);  /* светло-серый с прозрачностью */
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    color: var(--dark-color);
     padding: 60px 0;
     margin-bottom: 40px;
     text-align: center;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-radius: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 .hero-section h1 {
     font-size: 3.5rem;
     font-weight: bold;
     margin-bottom: 20px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
     animation: fadeInDown 1s ease;
+    color: var(--dark-color);
 }
 
 .hero-section .lead {
     font-size: 1.3rem;
-    opacity: 0.9;
+    opacity: 0.8;
     animation: fadeInUp 1s ease;
+    color: var(--dark-color);
 }
 
 /* Навигация */
 .navbar-custom {
-    background: white;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    background: rgba(255, 255, 255, 0.15);  /* полупрозрачный белый */
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-bottom: 1px solid rgba(128, 128, 128, 0.1);
     padding: 15px 0;
     position: sticky;
     top: 0;
@@ -63,7 +584,7 @@ body {
 }
 
 .brand-logo:hover {
-    color: #b02a37;
+    color: var(--dark-color);
 }
 
 .brand-logo i {
@@ -72,19 +593,21 @@ body {
 
 /* Виджет корзины */
 .cart-widget {
-    background: var(--light-color);
+    background: rgba(128, 128, 128, 0.1);  /* светло-серый с прозрачностью */
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     padding: 10px 20px;
     border-radius: 30px;
     display: flex;
     align-items: center;
     gap: 10px;
     transition: all 0.3s;
-    border: 1px solid #e9ecef;
+    border: 1px solid rgba(128, 128, 128, 0.15);
 }
 
 .cart-widget:hover {
-    background: white;
-    box-shadow: 0 2px 10px rgba(220, 53, 69, 0.1);
+    background: rgba(128, 128, 128, 0.15);
+    box-shadow: 0 2px 10px rgba(90, 78, 62, 0.1);
 }
 
 .cart-count {
@@ -100,10 +623,12 @@ body {
 
 /* Категории */
 .category-nav {
-    background: white;
+    background: rgba(128, 128, 128, 0.08);  /* светло-серый с прозрачностью */
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    border: 1px solid rgba(128, 128, 128, 0.1);
     border-radius: 50px;
     padding: 10px;
-    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
     margin-bottom: 40px;
     display: flex;
     justify-content: center;
@@ -120,14 +645,14 @@ body {
     padding: 12px 25px;
     border-radius: 30px;
     font-weight: 500;
-    color: #666;
+    color: var(--dark-color);
     transition: all 0.3s;
     cursor: pointer;
     font-size: 1rem;
 }
 
 .category-btn:hover {
-    background: var(--light-color);
+    background: rgba(128, 128, 128, 0.1);
     color: var(--primary-color);
     transform: translateY(-2px);
 }
@@ -135,16 +660,17 @@ body {
 .category-btn.active {
     background: var(--primary-color);
     color: white;
-    box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
+    box-shadow: 0 4px 10px rgba(90, 78, 62, 0.3);
 }
 
 /* Карточки блюд */
 .dish-card {
-    background: white;
-    border: none;
+    background: rgba(255, 255, 255, 0.2);  /* полупрозрачный белый */
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(128, 128, 128, 0.1);
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
     transition: all 0.3s ease;
     height: 100%;
     position: relative;
@@ -154,12 +680,13 @@ body {
 
 .dish-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 15px 35px rgba(220, 53, 69, 0.15);
+    box-shadow: 0 15px 35px rgba(90, 78, 62, 0.15);
+    background: rgba(255, 255, 255, 0.25);
 }
 
 .dish-image {
     height: 200px;
-    background: linear-gradient(135deg, var(--light-color), #e9ecef);
+    background: rgba(128, 128, 128, 0.05);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -203,7 +730,8 @@ body {
 }
 
 .dish-description {
-    color: #666;
+    color: var(--dark-color);
+    opacity: 0.8;
     font-size: 0.95rem;
     margin-bottom: 15px;
     line-height: 1.6;
@@ -214,8 +742,10 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 15px 20px;
-    background: var(--light-color);
-    border-top: 1px solid #e9ecef;
+    background: rgba(128, 128, 128, 0.05);  /* светло-серый с прозрачностью */
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    border-top: 1px solid rgba(128, 128, 128, 0.1);
     margin-top: auto;
 }
 
@@ -242,9 +772,9 @@ body {
 }
 
 .add-to-cart-btn:hover {
-    background: #b02a37;
+    background: var(--dark-color);
     transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+    box-shadow: 0 4px 12px rgba(90, 78, 62, 0.3);
 }
 
 .add-to-cart-btn i {
@@ -255,21 +785,24 @@ body {
 .empty-cart-message {
     text-align: center;
     padding: 60px 20px;
-    background: white;
+    background: rgba(128, 128, 128, 0.05);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
     border-radius: 20px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
     margin: 40px 0;
 }
 
 .empty-cart-message i {
     font-size: 5rem;
-    color: #ccc;
+    color: var(--primary-color);
+    opacity: 0.5;
     margin-bottom: 20px;
 }
 
 .empty-cart-message p {
     font-size: 1.2rem;
-    color: #666;
+    color: var(--dark-color);
+    opacity: 0.8;
 }
 
 /* Тост-уведомление */
@@ -284,6 +817,10 @@ body {
     min-width: 250px;
     border-radius: 10px;
     box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    background: rgba(90, 78, 62, 0.9) !important;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    color: white;
 }
 
 /* Анимации */
@@ -416,7 +953,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: rgba(128, 128, 128, 0.05);
     border-radius: 10px;
 }
 
@@ -426,7 +963,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #b02a37;
+    background: var(--dark-color);
 }
 
 /* Дополнительные эффекты */
@@ -461,9 +998,9 @@ body {
 }
 
 .badge.bg-secondary {
-    background: var(--light-color) !important;
+    background: rgba(128, 128, 128, 0.2) !important;
     color: var(--dark-color);
-    border: 1px solid #dee2e6;
+    border: 1px solid rgba(128, 128, 128, 0.1);
 }
 
 /* Стили для загрузки */
@@ -471,7 +1008,7 @@ body {
     display: inline-block;
     width: 40px;
     height: 40px;
-    border: 3px solid var(--light-color);
+    border: 3px solid rgba(128, 128, 128, 0.1);
     border-top-color: var(--primary-color);
     border-radius: 50%;
     animation: spin 1s linear infinite;
@@ -493,21 +1030,25 @@ body {
 }
 
 .alert-success {
-    background: linear-gradient(135deg, #d4edda, #c3e6cb);
-    color: #155724;
+    background: rgba(107, 95, 79, 0.2);
+    backdrop-filter: blur(5px);
+    color: var(--dark-color);
 }
 
 .alert-danger {
-    background: linear-gradient(135deg, #f8d7da, #f5c6cb);
-    color: #721c24;
+    background: rgba(139, 58, 58, 0.2);
+    backdrop-filter: blur(5px);
+    color: var(--dark-color);
 }
 
 .alert-warning {
-    background: linear-gradient(135deg, #fff3cd, #ffeeba);
-    color: #856404;
+    background: rgba(192, 168, 106, 0.2);
+    backdrop-filter: blur(5px);
+    color: var(--dark-color);
 }
 
 .alert-info {
-    background: linear-gradient(135deg, #d1ecf1, #bee5eb);
-    color: #0c5460;
+    background: rgba(106, 139, 139, 0.2);
+    backdrop-filter: blur(5px);
+    color: var(--dark-color);
 }
