@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Панель администратора</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -11,16 +12,57 @@
         <a class="navbar-brand" href="#">🍽️ Goulash Clone - Администратор</a>
         <div class="navbar-nav">
             <a class="nav-link active" href="/admin/dashboard">Главная</a>
+            <a class="nav-link" href="/admin/staff">Сотрудники</a>
             <a class="nav-link" href="/admin/orders/all">Все заказы</a>
-            <a class="nav-link" href="/login?logout">Выйти</a>
+            <a class="nav-link" href="/admin/order/create">Создать заказ</a>
+            <a class="nav-link" href="/logout">Выйти</a>
         </div>
     </div>
 </nav>
 
 <div class="container mt-4">
+    <!-- Статистика -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5>Новые заказы</h5>
+                    <h2 th:text="${newOrdersCount}">0</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <h5>Готовится</h5>
+                    <h2 th:text="${cookingOrders}">0</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5>В доставке</h5>
+                    <h2 th:text="${deliveringOrders}">0</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5>Сотрудники</h5>
+                    <h2>
+                        <span th:text="${activeCooks}"></span> /
+                        <span th:text="${activeCouriers}"></span>
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <h2 class="mb-4">Новые заказы (требуют подтверждения)</h2>
-    <div class="row" th:if="${not #lists.isEmpty(newOrders)}">
-        <div class="col-md-6 mb-4" th:each="order : ${newOrders}">
+    <div class="row" th:if="${not #lists.isEmpty(newOrdersList)}">
+        <div class="col-md-6 mb-4" th:each="order : ${newOrdersList}">
             <div class="card border-warning">
                 <div class="card-header bg-warning text-white">
                     <h5 class="mb-0">Заказ #<span th:text="${order.id}">1</span></h5>
@@ -28,7 +70,8 @@
                 <div class="card-body">
                     <p><strong>Клиент:</strong> <span th:text="${order.clientName}">Иван</span></p>
                     <p><strong>Телефон:</strong> <span th:text="${order.clientPhone}">+7...</span></p>
-                    <p><strong>Адрес:</strong> <span th:text="${order.address}">ул. Пушкина</span></p>
+                    <p th:if="${order.pickup != true}"><strong>Адрес:</strong> <span th:text="${order.address}">ул. Пушкина</span></p>
+                    <p th:if="${order.pickup == true}"><strong>Самовывоз:</strong> <span class="badge bg-primary">Да</span></p>
                     <p><strong>Сумма:</strong> <span class="h5 text-warning" th:text="${order.totalAmount} + ' ₽'">1000 ₽</span></p>
 
                     <h6 class="mt-3">Состав заказа:</h6>
@@ -50,7 +93,7 @@
         </div>
     </div>
 
-    <div th:if="${#lists.isEmpty(newOrders)}" class="alert alert-info">
+    <div th:if="${#lists.isEmpty(newOrdersList)}" class="alert alert-info">
         Нет новых заказов
     </div>
 
@@ -65,7 +108,13 @@
                     <p><strong>Клиент:</strong> <span th:text="${order.clientName}">Иван</span></p>
                     <p><strong>Телефон:</strong> <span th:text="${order.clientPhone}">+7...</span></p>
                     <p><strong>Сумма:</strong> <span th:text="${order.totalAmount} + ' ₽'">1000 ₽</span></p>
+                    <span th:if="${order.pickup == true}" class="badge bg-primary">Самовывоз</span>
                     <span class="badge bg-info">Передан на кухню</span>
+                    <form th:if="${order.pickup == true}" th:action="@{'/admin/order/' + ${order.id} + '/pickup-complete'}" method="post" class="mt-2">
+                        <button type="submit" class="btn btn-primary w-100">
+                            🏪 Завершить самовывоз
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

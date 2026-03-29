@@ -4,91 +4,223 @@
     <meta charset="UTF-8">
     <title>Оформление заказа</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #f5f5f5;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #333;
+        }
+        .navbar {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            padding: 15px 0;
+            border-bottom: 1px solid #eaeaea;
+        }
+        .brand-logo {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #4a4a4a;
+            text-decoration: none;
+        }
+        .brand-logo:hover { color: #2c2c2c; }
+        .btn-back {
+            background: #f5f5f5;
+            color: #6c6c6c;
+            border: 1px solid #eaeaea;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .btn-back:hover {
+            background: #eaeaea;
+            color: #2c2c2c;
+        }
+        .checkout-card {
+            background: white;
+            border: 1px solid #eaeaea;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-top: 30px;
+        }
+        .order-summary {
+            background: #fafafa;
+            padding: 25px;
+            border-right: 1px solid #eaeaea;
+            height: 100%;
+        }
+        .form-section {
+            padding: 25px;
+        }
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #4a4a4a;
+            margin-bottom: 20px;
+        }
+        .form-control {
+            background: #f5f5f5;
+            border: 1px solid #eaeaea;
+            border-radius: 12px;
+            padding: 10px 15px;
+            font-size: 0.9rem;
+        }
+        .form-control:focus {
+            background: white;
+            border-color: #c0c0c0;
+            box-shadow: none;
+        }
+        .form-label {
+            color: #8a8a8a;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        .btn-submit {
+            background: #eaeaea;
+            color: #4a4a4a;
+            border: none;
+            padding: 12px;
+            border-radius: 30px;
+            font-weight: 500;
+            width: 100%;
+            transition: all 0.2s;
+        }
+        .btn-submit:hover {
+            background: #d0d0d0;
+            color: #2c2c2c;
+        }
+        .btn-clear {
+            background: #f5f5f5;
+            color: #8a8a8a;
+            border: 1px solid #eaeaea;
+            padding: 12px;
+            border-radius: 30px;
+            width: 100%;
+            transition: all 0.2s;
+        }
+        .btn-clear:hover {
+            background: #eaeaea;
+            color: #6c6c6c;
+        }
+        .table-custom {
+            width: 100%;
+        }
+        .table-custom th {
+            background: #f5f5f5;
+            padding: 12px 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #8a8a8a;
+            border-bottom: 1px solid #eaeaea;
+        }
+        .table-custom td {
+            padding: 12px 10px;
+            font-size: 0.9rem;
+            color: #4a4a4a;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .total-price {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #4a4a4a;
+        }
+        .divider {
+            height: 1px;
+            background: #eaeaea;
+            margin: 20px 0;
+        }
+        .alert-warning {
+            background: #fafafa;
+            border: 1px solid #eaeaea;
+            border-radius: 16px;
+            color: #8a8a8a;
+            text-align: center;
+            padding: 30px;
+            margin-top: 30px;
+        }
+        @media (max-width: 768px) {
+            .order-summary { border-right: none; border-bottom: 1px solid #eaeaea; }
+        }
+    </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-danger">
-    <div class="container">
-        <a class="navbar-brand" href="/client/menu">🍽️ Goulash Clone</a>
-        <div class="navbar-nav">
-            <a class="nav-link" href="/client/menu">← Назад в меню</a>
-        </div>
+<div class="navbar">
+    <div class="container d-flex justify-content-between align-items-center">
+        <a class="brand-logo" href="/client/menu"><i class="bi bi-egg-fried"></i> Goulash Clone</a>
+        <a href="/client/menu" class="btn-back"><i class="bi bi-arrow-left"></i> Назад в меню</a>
     </div>
-</nav>
+</div>
 
-<div class="container mt-4">
-    <h1 class="mb-4">Оформление заказа</h1>
+<div class="container">
+    <div th:if="${#lists.isEmpty(cartDishes)}" class="alert-warning">
+        <i class="bi bi-cart-x fs-3"></i>
+        <p class="mt-2 mb-0">Ваша корзина пуста!</p>
+        <a href="/client/menu" class="btn btn-sm btn-outline-secondary mt-2">Вернуться в меню</a>
+    </div>
 
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header bg-danger text-white">
-                    <h5 class="mb-0">Ваш заказ</h5>
+    <div th:unless="${#lists.isEmpty(cartDishes)}">
+        <div class="checkout-card">
+            <div class="row g-0">
+                <div class="col-md-7">
+                    <div class="order-summary">
+                        <h4 class="section-title"><i class="bi bi-basket"></i> Ваш заказ</h4>
+                        <div class="table-responsive">
+                            <table class="table-custom">
+                                <thead><tr><th>Блюдо</th><th class="text-center">Кол-во</th><th class="text-end">Цена</th><th class="text-end">Сумма</th></tr></thead>
+                                <tbody>
+                                <tr th:each="dish : ${cartDishes}">
+                                    <td th:text="${dish.name}">Пицца</td>
+                                    <td class="text-center" th:text="${cart.get(dish.id)}">1</td>
+                                    <td class="text-end" th:text="${dish.price} + ' ₽'">500 ₽</td>
+                                    <td class="text-end" th:text="${dish.price * cart.get(dish.id)} + ' ₽'">500 ₽</td>
+                                </tr>
+                                </tbody>
+                                <tfoot><tr style="border-top:1px solid #eaeaea"><td colspan="3" class="text-end fw-bold">Итого:</td><td class="text-end total-price" th:text="${total} + ' ₽'">1000 ₽</td></tr></tfoot>
+                            </table>
+                        </div>
+                        <div class="divider"></div>
+                        <a href="/client/menu" class="btn-back d-block text-center"><i class="bi bi-pencil"></i> Добавить ещё блюда</a>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>Блюдо</th>
-                            <th>Количество</th>
-                            <th>Цена</th>
-                            <th>Сумма</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="dish : ${cartDishes}">
-                            <td th:text="${dish.name}">Пицца</td>
-                            <td th:text="${cart.get(dish.id)}">1</td>
-                            <td th:text="${dish.price} + ' ₽'">500 ₽</td>
-                            <td th:text="${dish.price * cart.get(dish.id)} + ' ₽'">500 ₽</td>
-                        </tr>
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                            <th colspan="3" class="text-end">Итого:</th>
-                            <th class="text-danger" th:text="${total} + ' ₽'">1000 ₽</th>
-                        </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header bg-danger text-white">
-                    <h5 class="mb-0">Данные для доставки</h5>
-                </div>
-                <div class="card-body">
-                    <form th:action="@{/client/order/create}" method="post">
-                        <div class="mb-3">
-                            <label for="clientName" class="form-label">Ваше имя *</label>
-                            <input type="text" class="form-control" id="clientName" name="clientName" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="clientPhone" class="form-label">Телефон *</label>
-                            <input type="tel" class="form-control" id="clientPhone" name="clientPhone"
-                                   placeholder="+7 (999) 123-45-67" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="address" class="form-label">Адрес доставки *</label>
-                            <textarea class="form-control" id="address" name="address" rows="2" required></textarea>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="comment" class="form-label">Комментарий к заказу</label>
-                            <textarea class="form-control" id="comment" name="comment" rows="2"></textarea>
-                        </div>
-
-                        <button type="submit" class="btn btn-danger w-100">
-                            Подтвердить заказ
-                        </button>
-                    </form>
+                <div class="col-md-5">
+                    <div class="form-section">
+                        <h4 class="section-title"><i class="bi bi-pencil"></i> Данные для доставки</h4>
+                        <form th:action="@{/client/order/create}" method="post">
+                            <div class="mb-3"><label class="form-label"><i class="bi bi-person"></i> Ваше имя *</label><input type="text" class="form-control" name="clientName" required placeholder="Иван Иванов"></div>
+                            <div class="mb-3"><label class="form-label"><i class="bi bi-telephone"></i> Телефон *</label><input type="tel" class="form-control" name="clientPhone" required placeholder="+7 (999) 123-45-67"></div>
+                            <div class="mb-3" id="addressBlock"><label class="form-label"><i class="bi bi-geo-alt"></i> Адрес доставки *</label><textarea class="form-control" name="address" rows="2" placeholder="ул. Пушкина, д. 10, кв. 5"></textarea></div>
+                            <div class="mb-3"><label class="form-label"><i class="bi bi-chat"></i> Комментарий</label><textarea class="form-control" name="comment" rows="2" placeholder="Пожелания, звонок в домофон"></textarea></div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" name="pickup" id="pickupCheck" value="true">
+                                <label class="form-check-label" for="pickupCheck"><i class="bi bi-shop"></i> Самовывоз</label>
+                            </div>
+                            <button type="submit" class="btn-submit"><i class="bi bi-check-circle"></i> Подтвердить заказ</button>
+                        </form>
+                        <div class="divider"></div>
+                        <form th:action="@{/client/cart/clear}" method="post"><button type="submit" class="btn-clear"><i class="bi bi-trash"></i> Очистить корзину</button></form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.getElementById('pickupCheck').addEventListener('change', function() {
+    var addressBlock = document.getElementById('addressBlock');
+    var addressInput = addressBlock.querySelector('textarea');
+    if (this.checked) {
+        addressBlock.style.display = 'none';
+        addressInput.removeAttribute('required');
+    } else {
+        addressBlock.style.display = 'block';
+        addressInput.setAttribute('required', '');
+    }
+});
+</script>
 </body>
 </html>

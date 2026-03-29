@@ -22,6 +22,7 @@ public class CourierController {
     public String availableOrders(Model model) {
         List<Order> readyOrders = orderService.getOrdersByStatus(OrderStatus.READY);
         model.addAttribute("readyOrders", readyOrders);
+        model.addAttribute("orders", orderService.getOrdersForCourier());
         return "courier/orders";
     }
 

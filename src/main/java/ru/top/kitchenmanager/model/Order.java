@@ -45,6 +45,9 @@ public class Order {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(name = "pickup")
+    private Boolean pickup = false;
+
     // 👇 ДОБАВЬТЕ ЭТОТ КОНСТРУКТОР
     public Order() {
         // Пустой конструктор для JPA
@@ -148,5 +151,13 @@ public class Order {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Boolean getPickup() {
+        return pickup;
+    }
+
+    public void setPickup(Boolean pickup) {
+        this.pickup = pickup;
     }
 }

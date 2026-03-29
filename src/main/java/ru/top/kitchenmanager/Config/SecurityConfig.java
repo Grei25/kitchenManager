@@ -12,7 +12,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -23,70 +29,77 @@ public class SecurityConfig {
         MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector);
 
         http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(csrf -> csrf.disable())
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login")
+                        .defaultSuccessUrl("/", true)
+                        .failureUrl("/login?error=true")
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout=true")
+                        .permitAll())
                 .authorizeHttpRequests(authz -> authz
-                        // H2 консоль доступна всем
-                        .requestMatchers(mvcMatcherBuilder.pattern("/h2-console/**")).permitAll()
-                        // Статические ресурсы
+                        .requestMatchers(mvcMatcherBuilder.pattern("/api/auth/**")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/css/**")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/js/**")).permitAll()
-                        // Клиентская часть
+                        .requestMatchers(mvcMatcherBuilder.pattern("/images/**")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/static/**")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/favicon.ico")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/client/**")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/login")).permitAll()
-                        // Админка
-                        .requestMatchers(mvcMatcherBuilder.pattern("/admin/**")).hasRole("ADMIN")
-                        // Повар
-                        .requestMatchers(mvcMatcherBuilder.pattern("/cook/**")).hasRole("COOK")
-                        // Курьер
-                        .requestMatchers(mvcMatcherBuilder.pattern("/courier/**")).hasRole("COURIER")
-                        // Все остальное требует аутентификации
+                        .requestMatchers(mvcMatcherBuilder.pattern("/admin/**")).hasAnyRole("ADMIN", "SUPER_ADMIN")
+                        .requestMatchers(mvcMatcherBuilder.pattern("/cook/**")).hasAnyRole("COOK", "SUPER_ADMIN")
+                        .requestMatchers(mvcMatcherBuilder.pattern("/courier/**")).hasAnyRole("COURIER", "SUPER_ADMIN")
                         .anyRequest().authenticated()
-                )
-                .formLogin(form -> form
-                        .loginPage("/login")
-                        .permitAll()
-                        .defaultSuccessUrl("/", true)
-                )
-                .logout(logout -> logout
-                        .logoutSuccessUrl("/login?logout")
-                        .permitAll()
-                        .deleteCookies("JSESSIONID")
-                        .invalidateHttpSession(true)
-                        .clearAuthentication(true)
-                )
-                // Отключаем CSRF для H2 консоли
-                .csrf(csrf -> csrf
-                        .ignoringRequestMatchers(mvcMatcherBuilder.pattern("/h2-console/**"))
-                )
-                // Разрешаем фреймы для H2 консоли
-                .headers(headers -> headers
-                        .frameOptions(frameOptions -> frameOptions.sameOrigin())
                 );
 
         return http.build();
     }
 
     @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:8080"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+    @Bean
     public UserDetailsService userDetailsService() {
+        UserDetails superAdmin = User.builder()
+                .username("superadmin")
+                .password(passwordEncoder().encode("super123"))
+                .authorities("ROLE_SUPER_ADMIN")
+                .build();
+
         UserDetails admin = User.builder()
                 .username("admin")
                 .password(passwordEncoder().encode("admin123"))
-                .roles("ADMIN")
+                .authorities("ROLE_ADMIN")
                 .build();
 
         UserDetails cook = User.builder()
                 .username("cook")
                 .password(passwordEncoder().encode("cook123"))
-                .roles("COOK")
+                .authorities("ROLE_COOK")
                 .build();
 
         UserDetails courier = User.builder()
                 .username("courier")
                 .password(passwordEncoder().encode("courier123"))
-                .roles("COURIER")
+                .authorities("ROLE_COURIER")
                 .build();
 
-        return new InMemoryUserDetailsManager(admin, cook, courier);
+        return new InMemoryUserDetailsManager(superAdmin, admin, cook, courier);
     }
 
     @Bean

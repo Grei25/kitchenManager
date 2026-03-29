@@ -4,8 +4,8 @@ public class OrderDto {
     private String clientPhone;
     private String address;
     private String comment;
+    private boolean pickup;
 
-    // Геттеры и сеттеры
     public String getClientName() { return clientName; }
     public void setClientName(String clientName) { this.clientName = clientName; }
 
@@ -17,4 +17,7 @@ public class OrderDto {
 
     public String getComment() { return comment; }
     public void setComment(String comment) { this.comment = comment; }
+
+    public boolean isPickup() { return pickup; }
+    public void setPickup(boolean pickup) { this.pickup = pickup; }
 }

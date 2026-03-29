@@ -10,19 +10,23 @@ DBCC CHECKIDENT ('dishes', RESEED, 0);
 DBCC CHECKIDENT ('orders', RESEED, 0);
 DBCC CHECKIDENT ('order_items', RESEED, 0);
 
--- Добавляем пользователей
-
+-- SUPER_ADMIN
 INSERT INTO users (username, password, full_name, phone, role, created_at) VALUES
-    ('admin', '$2a$10$rRy8GSJ5QyqKqZVZQqQqQeQqQqQqQqQqQqQqQqQqQqQqQqQqQq', 'Администратор', '+7 (999) 111-11-11', 'ADMIN', GETDATE());
+    ('superadmin', '$2a$10$EqKcp1WFMj8HJLnPQvU6QOqKqKqKqKqKqKqKqKqKqKqKqKqKqKqKq', 'Главный Администратор', '+7 (999) 000-00-00', 'SUPER_ADMIN', GETDATE());
 
-
+-- ADMIN
 INSERT INTO users (username, password, full_name, phone, role, created_at) VALUES
-    ('cook', '$2a$10$rRy8GSJ5QyqKqZVZQqQqQeQqQqQqQqQqQqQqQqQqQqQqQqQqQq', 'Повар Иван', '+7 (999) 222-22-22', 'COOK', GETDATE());
+    ('admin', '$2a$10$EqKcp1WFMj8HJLnPQvU6QOqKqKqKqKqKqKqKqKqKqKqKqKqKqKqKq', 'Администратор', '+7 (999) 111-11-11', 'ADMIN', GETDATE());
 
+-- COOK
 INSERT INTO users (username, password, full_name, phone, role, created_at) VALUES
-    ('courier', '$2a$10$rRy8GSJ5QyqKqZVZQqQqQeQqQqQqQqQqQqQqQqQqQqQqQqQqQq', 'Курьер Петр', '+7 (999) 333-33-33', 'COURIER', GETDATE());
+    ('cook', '$2a$10$EqKcp1WFMj8HJLnPQvU6QOqKqKqKqKqKqKqKqKqKqKqKqKqKqKqKq', 'Повар Иван', '+7 (999) 222-22-22', 'COOK', GETDATE());
 
--- Добавляем блюда с НОВЫМИ ССЫЛКАМИ (Pexels - быстрее)
+-- COURIER
+INSERT INTO users (username, password, full_name, phone, role, created_at) VALUES
+    ('courier', '$2a$10$EqKcp1WFMj8HJLnPQvU6QOqKqKqKqKqKqKqKqKqKqKqKqKqKqKqKq', 'Курьер Петр', '+7 (999) 333-33-33', 'COURIER', GETDATE());
+
+-- Блюда
 INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
     ('Маргарита', 'Томатный соус, моцарелла, базилик, оливковое масло', 450.00, 'Пицца', 1, 'https://img.freepik.com/premium-photo/pizza-margherita-stone-background_156140-6933.jpg?semt=ais_hybrid&w=740');
 
@@ -65,11 +69,10 @@ INSERT INTO dishes (name, description, price, category, available, image_url) VA
 INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
     ('Тирамису', 'Классический итальянский десерт', 320.00, 'Десерты', 1, 'https://www.koolinar.ru/all_image/article/4/4391/article-304135e2-a959-4e02-b311-a373f1343ae4_large.jpg');
 
--- Добавляем тестовый заказ
+-- Тестовый заказ
 INSERT INTO orders (client_name, client_phone, address, status, total_amount, created_at, updated_at) VALUES
     ('Иван Петров', '+7 (999) 123-45-67', 'ул. Пушкина, д. 10, кв. 5', 'NEW', 1250.00, GETDATE(), GETDATE());
 
--- Добавляем позиции заказа
 INSERT INTO order_items (order_id, dish_id, quantity, price)
 SELECT id, 1, 1, 450.00 FROM orders WHERE client_phone = '+7 (999) 123-45-67' AND client_name = 'Иван Петров';
 

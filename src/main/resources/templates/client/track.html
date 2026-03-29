@@ -4,98 +4,317 @@
     <meta charset="UTF-8">
     <title>Отслеживание заказа</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/track.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-color: #f5f0e8;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar-custom {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border-bottom: 1px solid rgba(128, 128, 128, 0.1);
+            padding: 15px 0;
+        }
+
+        .nav-link-custom {
+            color: #5a4e3e;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 30px;
+            background: rgba(128, 128, 128, 0.1);
+            backdrop-filter: blur(3px);
+            transition: all 0.3s;
+        }
+
+        .nav-link-custom:hover {
+            background: rgba(128, 128, 128, 0.2);
+            color: #3a3227;
+        }
+
+        .track-card {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(128, 128, 128, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        .status-line {
+            display: flex;
+            justify-content: space-between;
+            margin: 40px 0;
+            position: relative;
+        }
+
+        .status-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .status-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(128, 128, 128, 0.1);
+            backdrop-filter: blur(3px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-size: 28px;
+            color: #5a4e3e;
+            border: 1px solid rgba(128, 128, 128, 0.2);
+            transition: all 0.3s;
+        }
+
+        .status-icon.completed {
+            background: #5a4e3e;
+            color: white;
+        }
+
+        .status-icon.current {
+            background: #8b7a66;
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(90, 78, 62, 0.3);
+        }
+
+        .status-label {
+            color: #5a4e3e;
+            font-weight: 500;
+        }
+
+        .info-section {
+            background: rgba(128, 128, 128, 0.05);
+            backdrop-filter: blur(3px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .btn-back {
+            background: rgba(128, 128, 128, 0.1);
+            backdrop-filter: blur(3px);
+            color: #5a4e3e;
+            border: 1px solid rgba(128, 128, 128, 0.2);
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-back:hover {
+            background: rgba(128, 128, 128, 0.2);
+            color: #3a3227;
+            transform: translateX(-3px);
+        }
+
+        .table-custom {
+            background: rgba(128, 128, 128, 0.05);
+            backdrop-filter: blur(3px);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .table-custom thead {
+            background: rgba(90, 78, 62, 0.1);
+            color: #5a4e3e;
+        }
+
+        .table-custom td, .table-custom th {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(128, 128, 128, 0.1);
+        }
+    </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-danger">
+<!-- Навигация с кнопкой назад -->
+<div class="navbar-custom">
     <div class="container">
-        <a class="navbar-brand" href="/client/menu">🍽️ Goulash Clone</a>
-    </div>
-</nav>
-
-<div class="container mt-5">
-    <div class="card">
-        <div class="card-header bg-danger text-white">
-            <h4 class="mb-0">Заказ #<span th:text="${order.id}">1</span></h4>
-        </div>
-        <div class="card-body">
-            <div class="status-line">
-                <div class="status-item"
-                     th:classappend="${order.status.name() == 'NEW' or order.status.name() == 'CONFIRMED' or order.status.name() == 'COOKING' or order.status.name() == 'READY' or order.status.name() == 'DELIVERING' or order.status.name() == 'DELIVERED'} ? 'completed' : ''">
-                    <div class="status-icon">📝</div>
-                    <div>Принят</div>
-                </div>
-                <div class="status-item"
-                     th:classappend="${order.status.name() == 'CONFIRMED' or order.status.name() == 'COOKING' or order.status.name() == 'READY' or order.status.name() == 'DELIVERING' or order.status.name() == 'DELIVERED'} ? 'completed' : ''">
-                    <div class="status-icon">✅</div>
-                    <div>Подтвержден</div>
-                </div>
-                <div class="status-item"
-                     th:classappend="${order.status.name() == 'COOKING' or order.status.name() == 'READY' or order.status.name() == 'DELIVERING' or order.status.name() == 'DELIVERED'} ? 'completed' : ''">
-                    <div class="status-icon">👨‍🍳</div>
-                    <div>Готовится</div>
-                </div>
-                <div class="status-item"
-                     th:classappend="${order.status.name() == 'READY' or order.status.name() == 'DELIVERING' or order.status.name() == 'DELIVERED'} ? 'completed' : ''">
-                    <div class="status-icon">✅</div>
-                    <div>Готов</div>
-                </div>
-                <div class="status-item"
-                     th:classappend="${order.status.name() == 'DELIVERING' or order.status.name() == 'DELIVERED'} ? 'completed' : ''">
-                    <div class="status-icon">🛵</div>
-                    <div>В доставке</div>
-                </div>
-                <div class="status-item"
-                     th:classappend="${order.status.name() == 'DELIVERED'} ? 'completed' : ''">
-                    <div class="status-icon">🏠</div>
-                    <div>Доставлен</div>
-                </div>
-            </div>
-
-            <hr>
-
-            <div class="row mt-4">
-                <div class="col-md-6">
-                    <h5>Детали заказа</h5>
-                    <p><strong>Имя:</strong> <span th:text="${order.clientName}">Иван</span></p>
-                    <p><strong>Телефон:</strong> <span th:text="${order.clientPhone}">+7...</span></p>
-                    <p><strong>Адрес:</strong> <span th:text="${order.address}">ул. Пушкина</span></p>
-                    <p><strong>Статус:</strong>
-                        <span class="badge bg-primary" th:text="${order.status}">NEW</span>
-                    </p>
-                </div>
-                <div class="col-md-6">
-                    <h5>Состав заказа</h5>
-                    <table class="table table-sm">
-                        <thead>
-                        <tr>
-                            <th>Блюдо</th>
-                            <th>Кол-во</th>
-                            <th>Цена</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="item : ${order.items}">
-                            <td th:text="${item.dish.name}">Пицца</td>
-                            <td th:text="${item.quantity}">1</td>
-                            <td th:text="${item.price} + ' ₽'">500 ₽</td>
-                        </tr>
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                            <th colspan="2" class="text-end">Итого:</th>
-                            <th th:text="${order.totalAmount} + ' ₽'">1000 ₽</th>
-                        </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-
-            <div class="text-center mt-4">
-                <a href="/client/menu" class="btn btn-danger">Сделать новый заказ</a>
-            </div>
+        <div class="d-flex justify-content-between align-items-center w-100">
+            <a href="javascript:history.back()" class="btn-back">
+                <i class="bi bi-arrow-left"></i> Назад
+            </a>
+            <a href="/client/menu" class="btn-back">
+                <i class="bi bi-house"></i> В меню
+            </a>
         </div>
     </div>
 </div>
+
+<div class="container">
+    <div class="track-card">
+        <h2 class="mb-4" style="color: #5a4e3e;">
+            <i class="bi bi-truck"></i> Отслеживание заказа #<span th:text="${order.id}">1</span>
+        </h2>
+
+        <!-- Статус заказа -->
+        <div class="status-line" th:if="${order.pickup != true}">
+            <div class="status-item">
+                <div class="status-icon"
+                     th:classappend="${order.status.name() == 'NEW' or order.status.name() == 'CONFIRMED' or order.status.name() == 'COOKING' or order.status.name() == 'READY' or order.status.name() == 'DELIVERING' or order.status.name() == 'DELIVERED'} ? 'completed' : ''">
+                    📝
+                </div>
+                <div class="status-label">Принят</div>
+            </div>
+            <div class="status-item">
+                <div class="status-icon"
+                     th:classappend="${order.status.name() == 'CONFIRMED' or order.status.name() == 'COOKING' or order.status.name() == 'READY' or order.status.name() == 'DELIVERING' or order.status.name() == 'DELIVERED'} ? 'completed' : ''">
+                    ✅
+                </div>
+                <div class="status-label">Подтверждён</div>
+            </div>
+            <div class="status-item">
+                <div class="status-icon"
+                     th:classappend="${order.status.name() == 'COOKING' or order.status.name() == 'READY' or order.status.name() == 'DELIVERING' or order.status.name() == 'DELIVERED'} ? 'completed' : ''">
+                    👨‍🍳
+                </div>
+                <div class="status-label">Готовится</div>
+            </div>
+            <div class="status-item">
+                <div class="status-icon"
+                     th:classappend="${order.status.name() == 'READY' or order.status.name() == 'DELIVERING' or order.status.name() == 'DELIVERED'} ? 'completed' : ''">
+                    ✅
+                </div>
+                <div class="status-label">Готов</div>
+            </div>
+            <div class="status-item">
+                <div class="status-icon"
+                     th:classappend="${order.status.name() == 'DELIVERING' or order.status.name() == 'DELIVERED'} ? 'completed' : ''">
+                    🛵
+                </div>
+                <div class="status-label">В доставке</div>
+            </div>
+            <div class="status-item">
+                <div class="status-icon"
+                     th:classappend="${order.status.name() == 'DELIVERED'} ? 'completed' : ''">
+                    🏠
+                </div>
+                <div class="status-label">Доставлен</div>
+            </div>
+        </div>
+
+        <div class="status-line" th:if="${order.pickup == true}">
+            <div class="status-item">
+                <div class="status-icon"
+                     th:classappend="${order.status.name() == 'NEW' or order.status.name() == 'CONFIRMED' or order.status.name() == 'COOKING' or order.status.name() == 'READY' or order.status.name() == 'DELIVERED'} ? 'completed' : ''">
+                    📝
+                </div>
+                <div class="status-label">Принят</div>
+            </div>
+            <div class="status-item">
+                <div class="status-icon"
+                     th:classappend="${order.status.name() == 'CONFIRMED' or order.status.name() == 'COOKING' or order.status.name() == 'READY' or order.status.name() == 'DELIVERED'} ? 'completed' : ''">
+                    ✅
+                </div>
+                <div class="status-label">Подтверждён</div>
+            </div>
+            <div class="status-item">
+                <div class="status-icon"
+                     th:classappend="${order.status.name() == 'COOKING' or order.status.name() == 'READY' or order.status.name() == 'DELIVERED'} ? 'completed' : ''">
+                    👨‍🍳
+                </div>
+                <div class="status-label">Готовится</div>
+            </div>
+            <div class="status-item">
+                <div class="status-icon"
+                     th:classappend="${order.status.name() == 'READY' or order.status.name() == 'DELIVERED'} ? 'completed' : ''">
+                    ✅
+                </div>
+                <div class="status-label">Готов</div>
+            </div>
+            <div class="status-item">
+                <div class="status-icon"
+                     th:classappend="${order.status.name() == 'DELIVERED'} ? 'completed' : ''">
+                    🏪
+                </div>
+                <div class="status-label">Выдан</div>
+            </div>
+        </div>
+
+        <!-- Информация о заказе -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="info-section">
+                    <h5 style="color: #5a4e3e; margin-bottom: 15px;">
+                        <i class="bi bi-person"></i> Данные клиента
+                    </h5>
+                    <p style="color: #5a4e3e;"><strong>Имя:</strong> <span th:text="${order.clientName}">Иван</span></p>
+                    <p style="color: #5a4e3e;"><strong>Телефон:</strong> <span th:text="${order.clientPhone}">+7...</span></p>
+                    <p th:if="${order.pickup != true}" style="color: #5a4e3e;"><strong>Адрес:</strong> <span th:text="${order.address}">ул. Пушкина</span></p>
+                    <p th:if="${order.pickup == true}" style="color: #5a4e3e;"><strong>Самовывоз:</strong> <span class="badge bg-primary">Да</span></p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="info-section">
+                    <h5 style="color: #5a4e3e; margin-bottom: 15px;">
+                        <i class="bi bi-clock"></i> Информация о заказе
+                    </h5>
+                    <p style="color: #5a4e3e;"><strong>Статус:</strong>
+                        <span class="badge" th:switch="${order.status}" style="font-size: 0.9rem;">
+                                <span th:case="'NEW'" class="bg-warning" th:text="${order.status}">NEW</span>
+                                <span th:case="'CONFIRMED'" class="bg-info" th:text="${order.status}">CONFIRMED</span>
+                                <span th:case="'COOKING'" class="bg-primary" th:text="${order.status}">COOKING</span>
+                                <span th:case="'READY'" class="bg-success" th:text="${order.status}">READY</span>
+                                <span th:case="'DELIVERING'" class="bg-secondary" th:text="${order.status}">DELIVERING</span>
+                                <span th:case="'DELIVERED'" class="bg-success" th:text="${order.status}">DELIVERED</span>
+                                <span th:case="*" class="bg-danger" th:text="${order.status}">UNKNOWN</span>
+                            </span>
+                    </p>
+                    <p style="color: #5a4e3e;"><strong>Создан:</strong> <span th:text="${#temporals.format(order.createdAt, 'dd.MM.yyyy HH:mm')}">01.01.2024 12:00</span></p>
+                    <p style="color: #5a4e3e;"><strong>Обновлён:</strong> <span th:text="${#temporals.format(order.updatedAt, 'dd.MM.yyyy HH:mm')}">01.01.2024 12:00</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Состав заказа -->
+        <h5 style="color: #5a4e3e; margin: 20px 0 15px;">
+            <i class="bi bi-basket"></i> Состав заказа
+        </h5>
+        <table class="table table-custom">
+            <thead>
+            <tr>
+                <th>Блюдо</th>
+                <th>Количество</th>
+                <th>Цена</th>
+                <th>Сумма</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${order.items}" style="color: #5a4e3e;">
+                <td th:text="${item.dish.name}">Пицца</td>
+                <td th:text="${item.quantity}">1</td>
+                <td th:text="${item.price} + ' ₽'">500 ₽</td>
+                <td th:text="${item.price * item.quantity} + ' ₽'">500 ₽</td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr style="color: #5a4e3e; font-weight: bold;">
+                <td colspan="3" class="text-end">Итого:</td>
+                <td th:text="${order.totalAmount} + ' ₽'">1000 ₽</td>
+            </tr>
+            </tfoot>
+        </table>
+
+        <!-- Кнопка возврата в меню -->
+        <div class="text-center mt-4">
+            <a href="/client/menu" class="btn-back" style="padding: 12px 40px;">
+                <i class="bi bi-egg-fried"></i> Вернуться в меню
+            </a>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

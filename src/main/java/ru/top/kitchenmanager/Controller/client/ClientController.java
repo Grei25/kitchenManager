@@ -1,6 +1,12 @@
 package ru.top.kitchenmanager.Controller.client;
+
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +24,8 @@ import java.util.Map;
 @RequestMapping("/client")
 public class ClientController {
 
+    private static final int PAGE_SIZE = 6;
+
     @Autowired
     private DishService dishService;
 
@@ -25,46 +33,63 @@ public class ClientController {
     private OrderService orderService;
 
     @GetMapping("/menu")
-    public String menu(Model model, HttpSession session) {
-        List<Dish> dishes = dishService.getAllAvailableDishes();
-        model.addAttribute("dishes", dishes);
+    public String menu(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(required = false) String category,
+            Model model, 
+            HttpSession session) {
+        
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+        Page<Dish> dishPage = dishService.getAvailableDishesByCategory(category, pageable);
+        
+        model.addAttribute("dishes", dishPage.getContent());
+        model.addAttribute("dishPage", dishPage);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", dishPage.getTotalPages());
+        model.addAttribute("selectedCategory", category != null ? category : "all");
 
-        // Получаем корзину из сессии
-        Map<Long, Integer> cart = (Map<Long, Integer>) session.getAttribute("cart");
-        if (cart == null) {
-            cart = new HashMap<>();
-            session.setAttribute("cart", cart);
-        }
+        Map<Long, Integer> cart = getCart(session);
         model.addAttribute("cart", cart);
+        model.addAttribute("cartCount", calculateCartCount(cart));
 
         return "client/menu";
     }
 
     @PostMapping("/cart/add/{dishId}")
-    public String addToCart(@PathVariable Long dishId, HttpSession session) {
-        Map<Long, Integer> cart = (Map<Long, Integer>) session.getAttribute("cart");
-        if (cart == null) {
-            cart = new HashMap<>();
-        }
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> addToCart(
+            @PathVariable Long dishId,
+            HttpSession session) {
+        
+        Map<Long, Integer> cart = getCart(session);
         cart.put(dishId, cart.getOrDefault(dishId, 0) + 1);
         session.setAttribute("cart", cart);
-        return "redirect:/client/menu";
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", true);
+        response.put("cartCount", calculateCartCount(cart));
+        response.put("message", "Блюдо добавлено в корзину");
+        
+        return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/cart/remove/{dishId}")
-    public String removeFromCart(@PathVariable Long dishId, HttpSession session) {
-        Map<Long, Integer> cart = (Map<Long, Integer>) session.getAttribute("cart");
-        if (cart != null) {
-            cart.remove(dishId);
-            session.setAttribute("cart", cart);
-        }
-        return "redirect:/client/menu";
+    @GetMapping("/cart/count")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> getCartCount(HttpSession session) {
+        Map<Long, Integer> cart = getCart(session);
+        int count = calculateCartCount(cart);
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("count", count);
+        
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/checkout")
     public String checkout(Model model, HttpSession session) {
-        Map<Long, Integer> cart = (Map<Long, Integer>) session.getAttribute("cart");
-        if (cart == null || cart.isEmpty()) {
+        Map<Long, Integer> cart = getCart(session);
+
+        if (cart.isEmpty()) {
             return "redirect:/client/menu";
         }
 
@@ -87,13 +112,13 @@ public class ClientController {
 
     @PostMapping("/order/create")
     public String createOrder(@ModelAttribute OrderDto orderDto, HttpSession session) {
-        Map<Long, Integer> cart = (Map<Long, Integer>) session.getAttribute("cart");
-        if (cart == null || cart.isEmpty()) {
+        Map<Long, Integer> cart = getCart(session);
+        if (cart.isEmpty()) {
             return "redirect:/client/menu";
         }
 
         Long orderId = orderService.createOrder(orderDto, cart);
-        session.removeAttribute("cart"); // Очищаем корзину
+        session.removeAttribute("cart");
 
         return "redirect:/client/order/" + orderId + "/track";
     }
@@ -102,5 +127,25 @@ public class ClientController {
     public String trackOrder(@PathVariable Long id, Model model) {
         model.addAttribute("order", orderService.getOrderById(id));
         return "client/track";
+    }
+
+    @PostMapping("/cart/clear")
+    public String clearCart(HttpSession session) {
+        session.removeAttribute("cart");
+        return "redirect:/client/menu";
+    }
+
+    private Map<Long, Integer> getCart(HttpSession session) {
+        @SuppressWarnings("unchecked")
+        Map<Long, Integer> cart = (Map<Long, Integer>) session.getAttribute("cart");
+        if (cart == null) {
+            cart = new HashMap<>();
+            session.setAttribute("cart", cart);
+        }
+        return cart;
+    }
+
+    private int calculateCartCount(Map<Long, Integer> cart) {
+        return cart.values().stream().mapToInt(Integer::intValue).sum();
     }
 }

@@ -1,5 +1,6 @@
 package ru.top.kitchenmanager.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.top.kitchenmanager.model.Order;
 import ru.top.kitchenmanager.model.OrderStatus;
@@ -12,4 +13,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByStatus(OrderStatus status);
     List<Order> findByCourierAndStatus(User courier, OrderStatus status);
     List<Order> findByClientPhone(String phone);
+    long countByStatus(OrderStatus status);
+    @Query("SELECT o FROM Order o ORDER BY o.createdAt DESC")
+    List<Order> findRecentOrders(int limit);
+    List<Order> findByStatusIn(List<OrderStatus> statuses);
 }

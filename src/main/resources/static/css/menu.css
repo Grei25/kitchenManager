@@ -1051,4 +1051,13 @@ body {
     background: rgba(106, 139, 139, 0.2);
     backdrop-filter: blur(5px);
     color: var(--dark-color);
+}/* Убираем подчёркивание у ссылок категорий */
+.category-nav a,
+.category-btn {
+    text-decoration: none;
+}
+
+.category-nav a:hover,
+.category-btn:hover {
+    text-decoration: none;
 }

@@ -13,4 +13,10 @@ public interface OrderService {
     Long createOrder(OrderDto orderDto, Map<Long, Integer> cart);
     Order updateOrderStatus(Long orderId, OrderStatus newStatus);
     List<Order> getOrdersByClientPhone(String phone);
+    long countByStatus(OrderStatus status);
+    List<Order> getRecentOrders(int limit);
+    Map<OrderStatus, Long> getOrderStatistics();
+    List<Order> getOrdersForAdmin();      // все заказы
+    List<Order> getOrdersForCook();       // заказы со статусами NEW, CONFIRMED, COOKING
+    List<Order> getOrdersForCourier();    // заказы со статусами READY, DELIVERING
 }

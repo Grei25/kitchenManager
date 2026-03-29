@@ -13,6 +13,7 @@ import ru.top.kitchenmanager.service.OrderService;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,6 +48,7 @@ public class OrderServiceImpl implements OrderService {
         order.setClientName(orderDto.getClientName());
         order.setClientPhone(orderDto.getClientPhone());
         order.setAddress(orderDto.getAddress());
+        order.setPickup(orderDto.isPickup());
         order.setStatus(OrderStatus.NEW);
 
         List<OrderItem> orderItems = new ArrayList<>();
@@ -85,7 +87,45 @@ public class OrderServiceImpl implements OrderService {
         }
         return order;
     }
+    @Override
+    public long countByStatus(OrderStatus status) {
+        return orderRepository.countByStatus(status);
+    }
 
+    @Override
+    public List<Order> getRecentOrders(int limit) {
+        return orderRepository.findRecentOrders(limit);
+    }
+
+    @Override
+    public Map<OrderStatus, Long> getOrderStatistics() {
+        Map<OrderStatus, Long> stats = new HashMap<>();
+        for (OrderStatus status : OrderStatus.values()) {
+            stats.put(status, orderRepository.countByStatus(status));
+        }
+        return stats;
+    }
+    @Override
+    public List<Order> getOrdersForAdmin() {
+        return orderRepository.findAll();
+    }
+
+    @Override
+    public List<Order> getOrdersForCook() {
+        return orderRepository.findByStatusIn(List.of(
+                OrderStatus.NEW,
+                OrderStatus.CONFIRMED,
+                OrderStatus.COOKING
+        ));
+    }
+
+    @Override
+    public List<Order> getOrdersForCourier() {
+        return orderRepository.findByStatusIn(List.of(
+                OrderStatus.READY,
+                OrderStatus.DELIVERING
+        ));
+    }
     @Override
     public List<Order> getOrdersByClientPhone(String phone) {
         return orderRepository.findByClientPhone(phone);

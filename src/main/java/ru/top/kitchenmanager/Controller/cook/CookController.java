@@ -23,6 +23,7 @@ public class CookController {
 
         model.addAttribute("confirmedOrders", confirmedOrders);
         model.addAttribute("cookingOrders", cookingOrders);
+        model.addAttribute("orders", orderService.getOrdersForCook());
         return "cook/orders";
     }
 

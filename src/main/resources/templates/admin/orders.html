@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <title>Все заказы</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .badge {
+            font-size: 0.9rem;
+            padding: 5px 10px;
+        }
+    </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -11,8 +17,10 @@
         <a class="navbar-brand" href="#">🍽️ Goulash Clone - Администратор</a>
         <div class="navbar-nav">
             <a class="nav-link" href="/admin/dashboard">Главная</a>
+            <a class="nav-link" href="/admin/staff">Сотрудники</a>
             <a class="nav-link active" href="/admin/orders/all">Все заказы</a>
-            <a class="nav-link" href="/login?logout">Выйти</a>
+            <a class="nav-link" href="/admin/order/create">Создать заказ</a>
+            <a class="nav-link" href="/logout">Выйти</a>
         </div>
     </div>
 </nav>
@@ -39,16 +47,16 @@
             <td th:text="${order.clientPhone}">+7...</td>
             <td th:text="${order.totalAmount} + ' ₽'">1000 ₽</td>
             <td>
-                        <span class="badge"
-                              th:classappend="${order.status.name() == 'NEW'} ? 'bg-warning' :
-                                             ${order.status.name() == 'CONFIRMED'} ? 'bg-info' :
-                                             ${order.status.name() == 'COOKING'} ? 'bg-primary' :
-                                             ${order.status.name() == 'READY'} ? 'bg-success' :
-                                             ${order.status.name() == 'DELIVERING'} ? 'bg-secondary' :
-                                             ${order.status.name() == 'DELIVERED'} ? 'bg-success' : 'bg-danger'"
-                              th:text="${order.status}">
-                            NEW
-                        </span>
+                <span class="badge" th:switch="${order.status}">
+                    <span th:case="'NEW'" class="bg-warning" th:text="${order.status}">NEW</span>
+                    <span th:case="'CONFIRMED'" class="bg-info" th:text="${order.status}">CONFIRMED</span>
+                    <span th:case="'COOKING'" class="bg-primary" th:text="${order.status}">COOKING</span>
+                    <span th:case="'READY'" class="bg-success" th:text="${order.status}">READY</span>
+                    <span th:case="'DELIVERING'" class="bg-secondary" th:text="${order.status}">DELIVERING</span>
+                    <span th:case="'DELIVERED'" class="bg-success" th:text="${order.status}">DELIVERED</span>
+                    <span th:case="*" class="bg-danger" th:text="${order.status}">UNKNOWN</span>
+                </span>
+                <span th:if="${order.pickup == true}" class="badge bg-primary ms-1">Самовывоз</span>
             </td>
             <td th:text="${#temporals.format(order.createdAt, 'dd.MM.yyyy HH:mm')}">01.01.2024 12:00</td>
             <td>
