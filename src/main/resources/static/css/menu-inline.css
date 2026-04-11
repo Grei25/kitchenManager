@@ -1,0 +1,7 @@
+.cart-count { transition: transform 0.2s; }
+.cart-count.pulse { transform: scale(1.3); }
+.pagination { justify-content: center; margin-top: 30px; }
+.pagination .page-link { color: #5a4e3e; border-color: #e8e0d5; }
+.pagination .page-item.active .page-link { background-color: #5a4e3e; border-color: #5a4e3e; }
+.add-to-cart-btn { transition: all 0.2s; }
+.add-to-cart-btn.added { background-color: #198754 !important; border-color: #198754 !important; }

@@ -1,0 +1,12 @@
+/* Стили для страницы формы сотрудника */
+@import url('admin-common.css');
+
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.role-icon {
+    font-size: 2rem;
+}

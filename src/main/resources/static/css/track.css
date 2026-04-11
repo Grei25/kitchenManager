@@ -1,93 +1,129 @@
-/*.status-line {*/
-/*    display: flex;*/
-/*    justify-content: space-between;*/
-/*    margin: 40px 0;*/
-/*    position: relative;*/
-/*}*/
-/*.status-item {*/
-/*    text-align: center;*/
-/*    flex: 1;*/
-/*}*/
-/*.status-icon {*/
-/*    width: 50px;*/
-/*    height: 50px;*/
-/*    border-radius: 50%;*/
-/*    background: #e9ecef;*/
-/*    display: flex;*/
-/*    align-items: center;*/
-/*    justify-content: center;*/
-/*    margin: 0 auto 10px;*/
-/*    font-size: 24px;*/
-/*}*/
-/*.status-icon.completed {*/
-/*    background: #28a745;*/
-/*    color: white;*/
-/*}*/
-/*.status-icon.current {*/
-/*    background: #007bff;*/
-/*    color: white;*/
-/*}*/
 body {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    height: 100vh;
+    background-color: #f5f0e8;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.navbar-custom {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-bottom: 1px solid rgba(128, 128, 128, 0.1);
+    padding: 15px 0;
+}
+
+.nav-link-custom {
+    color: #5a4e3e;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 30px;
+    background: rgba(128, 128, 128, 0.1);
+    backdrop-filter: blur(3px);
+    transition: all 0.3s;
+}
+
+.nav-link-custom:hover {
+    background: rgba(128, 128, 128, 0.2);
+    color: #3a3227;
+}
+
+.track-card {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(128, 128, 128, 0.1);
+    border-radius: 20px;
+    padding: 30px;
+    margin-top: 30px;
+}
+
+.status-line {
+    display: flex;
+    justify-content: space-between;
+    margin: 40px 0;
+    position: relative;
+}
+
+.status-item {
+    text-align: center;
+    flex: 1;
+}
+
+.status-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(128, 128, 128, 0.1);
+    backdrop-filter: blur(3px);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-.login-container {
-    background: white;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.2);
-    width: 100%;
-    max-width: 400px;
-}
-h2 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 30px;
-    font-weight: bold;
-}
-.btn-primary {
-    width: 100%;
-    padding: 12px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border: none;
-    font-weight: 500;
+    margin: 0 auto 10px;
+    font-size: 28px;
+    color: #5a4e3e;
+    border: 1px solid rgba(128, 128, 128, 0.2);
     transition: all 0.3s;
 }
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+
+.status-icon.completed {
+    background: #5a4e3e;
+    color: white;
 }
-.info-box {
-    margin-top: 20px;
-    padding: 15px;
-    background: #f8f9fa;
-    border-radius: 5px;
-    font-size: 0.9rem;
+
+.status-icon.current {
+    background: #8b7a66;
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(90, 78, 62, 0.3);
 }
-.info-box p {
-    margin-bottom: 5px;
-    color: #666;
-}
-.form-label {
+
+.status-label {
+    color: #5a4e3e;
     font-weight: 500;
-    color: #555;
 }
-.form-control {
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    padding: 10px;
-    transition: all 0.3s;
-}
-.form-control:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
-}
-.alert {
-    border-radius: 5px;
+
+.info-section {
+    background: rgba(128, 128, 128, 0.05);
+    backdrop-filter: blur(3px);
+    border-radius: 15px;
+    padding: 20px;
     margin-bottom: 20px;
+}
+
+.btn-back {
+    background: rgba(128, 128, 128, 0.1);
+    backdrop-filter: blur(3px);
+    color: #5a4e3e;
+    border: 1px solid rgba(128, 128, 128, 0.2);
+    padding: 10px 25px;
+    border-radius: 30px;
+    font-weight: 500;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-back:hover {
+    background: rgba(128, 128, 128, 0.2);
+    color: #3a3227;
+    transform: translateX(-3px);
+}
+
+.table-custom {
+    background: rgba(128, 128, 128, 0.05);
+    backdrop-filter: blur(3px);
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.table-custom thead {
+    background: rgba(90, 78, 62, 0.1);
+    color: #5a4e3e;
+}
+
+.table-custom td, .table-custom th {
+    padding: 12px 15px;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.1);
 }

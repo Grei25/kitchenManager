@@ -18,7 +18,7 @@ public class LoginController {
     public String home() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        if (auth != null && auth.isAuthenticated() && 
+        if (auth != null && auth.isAuthenticated() &&
                 !auth.getName().equals("anonymousUser")) {
 
             for (GrantedAuthority authority : auth.getAuthorities()) {
@@ -35,5 +35,10 @@ public class LoginController {
         }
 
         return "redirect:/client/menu";
+    }
+
+    @GetMapping("/access-denied")
+    public String accessDenied() {
+        return "access-denied";
     }
 }

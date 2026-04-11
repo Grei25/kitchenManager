@@ -47,8 +47,9 @@ public class AdminStaffController {
         List<UserRole> roles = new ArrayList<>();
         roles.add(UserRole.COOK);
         roles.add(UserRole.COURIER);
+        // Только SUPER_ADMIN может создавать ADMIN
         if (isSuperAdmin()) {
-            roles.add(0, UserRole.ADMIN);
+            roles.add(UserRole.ADMIN);
         }
         return roles;
     }
@@ -102,6 +103,7 @@ public class AdminStaffController {
         model.addAttribute("user", new UserDto());
         model.addAttribute("roles", getAvailableRolesForCreation());
         model.addAttribute("isEdit", false);
+        model.addAttribute("isSuperAdmin", isSuperAdmin());
         return "admin/staff/form";
     }
 
@@ -109,10 +111,14 @@ public class AdminStaffController {
     public String saveStaff(@ModelAttribute("user") UserDto userDto,
                             RedirectAttributes redirectAttributes) {
         try {
-            if (!isSuperAdmin() && userDto.getRole() == UserRole.ADMIN) {
-                redirectAttributes.addFlashAttribute("errorMessage", 
-                        "Только SUPER_ADMIN может создавать админов");
-                return "redirect:/admin/staff";
+            // Проверка: только ADMIN или SUPER_ADMIN может создавать ADMIN
+            if (userDto.getRole() == UserRole.ADMIN) {
+                UserRole currentRole = getCurrentUserRole();
+                if (currentRole != UserRole.ADMIN && currentRole != UserRole.SUPER_ADMIN) {
+                    redirectAttributes.addFlashAttribute("errorMessage",
+                            "Недостаточно прав для создания админа");
+                    return "redirect:/admin/staff";
+                }
             }
             userService.createUser(userDto);
             redirectAttributes.addFlashAttribute("successMessage", "Сотрудник успешно создан");
@@ -142,6 +148,7 @@ public class AdminStaffController {
         model.addAttribute("user", userDto);
         model.addAttribute("roles", getAvailableRolesForCreation());
         model.addAttribute("isEdit", true);
+        model.addAttribute("isSuperAdmin", isSuperAdmin());
 
         return "admin/staff/form";
     }
@@ -152,19 +159,26 @@ public class AdminStaffController {
                               RedirectAttributes redirectAttributes) {
         try {
             User existingUser = userService.getUserById(id);
-            
-            if (!isSuperAdmin() && existingUser.getRole() == UserRole.ADMIN) {
-                redirectAttributes.addFlashAttribute("errorMessage", 
-                        "Нет прав для редактирования админа");
-                return "redirect:/admin/staff";
+            UserRole currentRole = getCurrentUserRole();
+
+            // Проверка прав на редактирование админа
+            if (existingUser.getRole() == UserRole.ADMIN) {
+                if (currentRole != UserRole.ADMIN && currentRole != UserRole.SUPER_ADMIN) {
+                    redirectAttributes.addFlashAttribute("errorMessage",
+                            "Нет прав для редактирования админа");
+                    return "redirect:/admin/staff";
+                }
             }
-            
-            if (!isSuperAdmin() && userDto.getRole() == UserRole.ADMIN) {
-                redirectAttributes.addFlashAttribute("errorMessage", 
-                        "Только SUPER_ADMIN может назначать роль админа");
-                return "redirect:/admin/staff";
+
+            // Проверка прав на назначение роли ADMIN
+            if (userDto.getRole() == UserRole.ADMIN) {
+                if (currentRole != UserRole.ADMIN && currentRole != UserRole.SUPER_ADMIN) {
+                    redirectAttributes.addFlashAttribute("errorMessage",
+                            "Нет прав для назначения роли админа");
+                    return "redirect:/admin/staff";
+                }
             }
-            
+
             userService.updateUser(id, userDto);
             redirectAttributes.addFlashAttribute("successMessage", "Данные сотрудника обновлены");
         } catch (Exception e) {
@@ -179,13 +193,17 @@ public class AdminStaffController {
     public String deleteStaff(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
             User user = userService.getUserById(id);
-            
-            if (!isSuperAdmin() && user.getRole() == UserRole.ADMIN) {
-                redirectAttributes.addFlashAttribute("errorMessage", 
-                        "Нет прав для удаления админа");
-                return "redirect:/admin/staff";
+            UserRole currentRole = getCurrentUserRole();
+
+            // Проверка прав на удаление админа
+            if (user.getRole() == UserRole.ADMIN) {
+                if (currentRole != UserRole.ADMIN && currentRole != UserRole.SUPER_ADMIN) {
+                    redirectAttributes.addFlashAttribute("errorMessage",
+                            "Нет прав для удаления админа");
+                    return "redirect:/admin/staff";
+                }
             }
-            
+
             userService.deleteUser(id);
             redirectAttributes.addFlashAttribute("successMessage", "Сотрудник удалён");
         } catch (Exception e) {
@@ -202,12 +220,15 @@ public class AdminStaffController {
                                    RedirectAttributes redirectAttributes) {
         try {
             User user = userService.getUserById(id);
+            UserRole currentRole = getCurrentUserRole();
 
-            // Проверка прав: только SUPER_ADMIN может блокировать/активировать админов
-            if (!isSuperAdmin() && user.getRole() == UserRole.ADMIN) {
-                redirectAttributes.addFlashAttribute("errorMessage",
-                        "Нет прав для изменения статуса админа");
-                return "redirect:/admin/staff";
+            // Проверка прав: только ADMIN или SUPER_ADMIN может блокировать/активировать админов
+            if (user.getRole() == UserRole.ADMIN) {
+                if (currentRole != UserRole.ADMIN && currentRole != UserRole.SUPER_ADMIN) {
+                    redirectAttributes.addFlashAttribute("errorMessage",
+                            "Нет прав для изменения статуса админа");
+                    return "redirect:/admin/staff";
+                }
             }
 
             userService.updateUserStatus(id, active);

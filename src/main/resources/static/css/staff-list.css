@@ -1,0 +1,6 @@
+/* Стили для страницы списка сотрудников */
+@import url('admin-common.css');
+
+.table-actions {
+    white-space: nowrap;
+}
