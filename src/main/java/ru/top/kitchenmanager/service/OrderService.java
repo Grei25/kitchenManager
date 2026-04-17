@@ -12,6 +12,8 @@ public interface OrderService {
     Order getOrderById(Long id);
     Long createOrder(OrderDto orderDto, Map<Long, Integer> cart);
     Order updateOrderStatus(Long orderId, OrderStatus newStatus);
+    Order acceptOrder(Long orderId);
+    Order completeOrder(Long orderId);
     List<Order> getOrdersByClientPhone(String phone);
     long countByStatus(OrderStatus status);
     List<Order> getRecentOrders(int limit);

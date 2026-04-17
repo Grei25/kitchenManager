@@ -35,7 +35,7 @@ public class User {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @Column(name = "is_active")
+    @Column(name = "isActive", nullable = false, columnDefinition = "BIT DEFAULT 1")
     private Boolean isActive = true;
 
     @PrePersist

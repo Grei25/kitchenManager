@@ -38,15 +38,15 @@
             <div class="card bg-warning text-white">
                 <div class="card-body">
                     <h5>Готовится</h5>
-                    <h2 th:text="${cookingOrders}">0</h2>
+                    <h2 th:text="${cookingOrdersCount}">0</h2>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card bg-info text-white">
                 <div class="card-body">
-                    <h5>В доставке</h5>
-                    <h2 th:text="${deliveringOrders}">0</h2>
+                    <h5>Готов к выдаче</h5>
+                    <h2 th:text="${readyOrders != null ? readyOrders.size() : 0}">0</h2>
                 </div>
             </div>
         </div>
@@ -74,7 +74,7 @@
                     <p><strong>Клиент:</strong> <span th:text="${order.clientName}">Иван</span></p>
                     <p><strong>Телефон:</strong> <span th:text="${order.clientPhone}">+7...</span></p>
                     <p th:if="${order.pickup != true}"><strong>Адрес:</strong> <span th:text="${order.address}">ул. Пушкина</span></p>
-                    <p th:if="${order.pickup == true}"><strong>Самовывоз:</strong> <span class="badge bg-primary">Да</span></p>
+                    <p th:if="${order.pickup == true}"><strong>Тип:</strong> <span class="badge bg-primary">Самовывоз</span></p>
                     <p><strong>Сумма:</strong> <span class="h5 text-warning" th:text="${order.totalAmount} + ' ₽'">1000 ₽</span></p>
 
                     <h6 class="mt-3">Состав заказа:</h6>
@@ -86,9 +86,9 @@
                         </li>
                     </ul>
 
-                    <form th:action="@{'/admin/order/' + ${order.id} + '/confirm'}" method="post">
+                    <form th:action="@{'/admin/order/' + ${order.id} + '/accept'}" method="post">
                         <button type="submit" class="btn btn-success w-100">
-                            ✅ Подтвердить заказ
+                            ✅ Принять заказ
                         </button>
                     </form>
                 </div>
@@ -100,7 +100,27 @@
         Нет новых заказов
     </div>
 
-    <h2 class="mb-4 mt-4">Подтвержденные заказы (в работе)</h2>
+    <!-- Заказы принятые (переданы на кухню для самовывоза) -->
+    <h2 class="mb-4 mt-4">Переданы на кухню</h2>
+    <div class="row" th:if="${not #lists.isEmpty(acceptedOrders)}">
+        <div class="col-md-6 mb-4" th:each="order : ${acceptedOrders}">
+            <div class="card border-info">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Заказ #<span th:text="${order.id}">1</span></h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Клиент:</strong> <span th:text="${order.clientName}">Иван</span></p>
+                    <p><strong>Телефон:</strong> <span th:text="${order.clientPhone}">+7...</span></p>
+                    <p><strong>Сумма:</strong> <span th:text="${order.totalAmount} + ' ₽'">1000 ₽</span></p>
+                    <span class="badge bg-primary">Самовывоз</span>
+                    <span class="badge bg-info">Передан на кухню</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Заказы подтвержденные (доставка - переданы на кухню) -->
+    <h2 class="mb-4 mt-4" th:if="${not #lists.isEmpty(confirmedOrders)}">Заказы на доставку (в работе)</h2>
     <div class="row" th:if="${not #lists.isEmpty(confirmedOrders)}">
         <div class="col-md-6 mb-4" th:each="order : ${confirmedOrders}">
             <div class="card border-info">
@@ -110,12 +130,31 @@
                 <div class="card-body">
                     <p><strong>Клиент:</strong> <span th:text="${order.clientName}">Иван</span></p>
                     <p><strong>Телефон:</strong> <span th:text="${order.clientPhone}">+7...</span></p>
+                    <p><strong>Адрес:</strong> <span th:text="${order.address}">ул. Пушкина</span></p>
                     <p><strong>Сумма:</strong> <span th:text="${order.totalAmount} + ' ₽'">1000 ₽</span></p>
-                    <span th:if="${order.pickup == true}" class="badge bg-primary">Самовывоз</span>
+                    <span class="badge bg-success">Доставка</span>
                     <span class="badge bg-info">Передан на кухню</span>
-                    <form th:if="${order.pickup == true}" th:action="@{'/admin/order/' + ${order.id} + '/pickup-complete'}" method="post" class="mt-2">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Заказы готовые к самовывозу -->
+    <h2 class="mb-4 mt-4">Готовы к выдаче</h2>
+    <div class="row" th:if="${not #lists.isEmpty(readyOrders)}">
+        <div class="col-md-6 mb-4" th:each="order : ${readyOrders}">
+            <div class="card border-success">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Заказ #<span th:text="${order.id}">1</span></h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Клиент:</strong> <span th:text="${order.clientName}">Иван</span></p>
+                    <p><strong>Телефон:</strong> <span th:text="${order.clientPhone}">+7...</span></p>
+                    <p><strong>Сумма:</strong> <span th:text="${order.totalAmount} + ' ₽'">1000 ₽</span></p>
+                    <span class="badge bg-success">Готов к выдаче</span>
+                    <form th:action="@{'/admin/order/' + ${order.id} + '/complete'}" method="post" class="mt-2">
                         <button type="submit" class="btn btn-primary w-100">
-                            🏪 Завершить самовывоз
+                            ✅ Выдать клиенту
                         </button>
                     </form>
                 </div>
@@ -123,8 +162,8 @@
         </div>
     </div>
 
-    <div th:if="${#lists.isEmpty(confirmedOrders)}" class="alert alert-info">
-        Нет заказов в работе
+    <div th:if="${#lists.isEmpty(readyOrders)}" class="alert alert-info">
+        Нет заказов готовых к выдаче
     </div>
 </div>
 

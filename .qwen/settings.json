@@ -1,0 +1,14 @@
+{
+  "modelProviders": {
+    "openai": [
+      {
+        "id": "qwen3-coder-plus",
+        "name": "qwen3-coder-plus",
+        "description": "Qwen3-Coder via Alibaba Cloud Coding Plan",
+        "envKey": "dgr_live_rNEXHvQtxDEWf0TNrgrtIcojc738R5qxvcXj0k4yi1qjjuhFFG",
+        "baseUrl": "https://www.dialagram.me/router/v1"
+      }
+    ]
+  },
+  "$version": 3
+}

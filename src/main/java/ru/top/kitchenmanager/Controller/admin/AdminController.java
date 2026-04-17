@@ -28,16 +28,21 @@ public class AdminController {
     @Autowired
     private DishService dishService;
 
-    @GetMapping("/dashboard")
+@GetMapping("/dashboard")
     public String dashboard(Model model) {
         // Списки заказов
         model.addAttribute("newOrdersList", orderService.getOrdersByStatus(OrderStatus.NEW));
         model.addAttribute("confirmedOrders", orderService.getOrdersByStatus(OrderStatus.CONFIRMED));
 
+        // Заказы для самовывоза
+        model.addAttribute("acceptedOrders", orderService.getOrdersByStatus(OrderStatus.ACCEPTED));
+        model.addAttribute("cookingOrders", orderService.getOrdersByStatus(OrderStatus.COOKING));
+        model.addAttribute("readyOrders", orderService.getOrdersByStatus(OrderStatus.READY));
+
         // Статистика (числа)
         model.addAttribute("newOrdersCount", orderService.countByStatus(OrderStatus.NEW));
-        model.addAttribute("cookingOrders", orderService.countByStatus(OrderStatus.COOKING));
-        model.addAttribute("deliveringOrders", orderService.countByStatus(OrderStatus.DELIVERING));
+        model.addAttribute("cookingOrdersCount", orderService.countByStatus(OrderStatus.COOKING));
+        model.addAttribute("deliveringOrdersCount", orderService.countByStatus(OrderStatus.DELIVERING));
 
         // Сотрудники
         model.addAttribute("activeCooks", userService.countActiveByRole(UserRole.COOK));
@@ -56,9 +61,15 @@ public class AdminController {
         return "redirect:/admin/dashboard";
     }
 
-    @PostMapping("/order/{id}/pickup-complete")
-    public String completePickup(@PathVariable Long id) {
-        orderService.updateOrderStatus(id, OrderStatus.DELIVERED);
+    @PostMapping("/order/{id}/accept")
+    public String acceptOrder(@PathVariable Long id) {
+        orderService.acceptOrder(id);
+        return "redirect:/admin/dashboard";
+    }
+
+    @PostMapping("/order/{id}/complete")
+    public String completeOrder(@PathVariable Long id) {
+        orderService.completeOrder(id);
         return "redirect:/admin/dashboard";
     }
 

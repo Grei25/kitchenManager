@@ -1,83 +1,80 @@
--- Очищаем таблицы
-DELETE FROM order_items;
-DELETE FROM orders;
-DELETE FROM dishes;
-DELETE FROM users;
-
--- Сброс идентификаторов
-DBCC CHECKIDENT ('users', RESEED, 0);
-DBCC CHECKIDENT ('dishes', RESEED, 0);
-DBCC CHECKIDENT ('orders', RESEED, 0);
-DBCC CHECKIDENT ('order_items', RESEED, 0);
-
--- SUPER_ADMIN
-INSERT INTO users (username, password, full_name, phone, role, created_at) VALUES
-    ('superadmin', '$2a$10$EqKcp1WFMj8HJLnPQvU6QOqKqKqKqKqKqKqKqKqKqKqKqKqKqKqKq', 'Главный Администратор', '+7 (999) 000-00-00', 'SUPER_ADMIN', GETDATE());
-
--- ADMIN
-INSERT INTO users (username, password, full_name, phone, role, created_at) VALUES
-    ('admin', '$2a$10$EqKcp1WFMj8HJLnPQvU6QOqKqKqKqKqKqKqKqKqKqKqKqKqKqKqKq', 'Администратор', '+7 (999) 111-11-11', 'ADMIN', GETDATE());
-
--- COOK
-INSERT INTO users (username, password, full_name, phone, role, created_at) VALUES
-    ('cook', '$2a$10$EqKcp1WFMj8HJLnPQvU6QOqKqKqKqKqKqKqKqKqKqKqKqKqKqKqKq', 'Повар Иван', '+7 (999) 222-22-22', 'COOK', GETDATE());
-
--- COURIER
-INSERT INTO users (username, password, full_name, phone, role, created_at) VALUES
-    ('courier', '$2a$10$EqKcp1WFMj8HJLnPQvU6QOqKqKqKqKqKqKqKqKqKqKqKqKqKqKqKq', 'Курьер Петр', '+7 (999) 333-33-33', 'COURIER', GETDATE());
-
--- Блюда
-INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
-    ('Маргарита', 'Томатный соус, моцарелла, базилик, оливковое масло', 450.00, 'Пицца', 1, 'https://img.freepik.com/premium-photo/pizza-margherita-stone-background_156140-6933.jpg?semt=ais_hybrid&w=740');
-
-INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
-    ('Пепперони', 'Томатный соус, моцарелла, пепперони, орегано', 550.00, 'Пицца', 1, 'https://avatars.mds.yandex.net/i?id=d7875153a89aefbb8b486cc1d020d5d8_l-5378240-images-thumbs&n=13');
-
-INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
-    ('Борщ', 'Украинский борщ с говядиной, свеклой, сметаной', 320.00, 'Супы', 1, 'https://avatars.mds.yandex.net/i?id=9b67e56c2ff5f96af31d0b134b971fbf_l-5289313-images-thumbs&n=13');
-
-INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
-    ('Тыквенный суп', 'Крем-суп из тыквы с имбирем и сливками', 280.00, 'Супы', 1, 'https://avatars.mds.yandex.net/get-shedevrum/14745968/img_a7cf55c883df11ef87143e0b8b3cb0e7/orig');
-
-INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
-    ('Цезарь с курицей', 'Салат с курицей, салатом романо, пармезаном и соусом цезарь', 380.00, 'Салаты', 1, 'https://fissman.ru/upload/dev2fun.imagecompress/webp/resize_cache/iblock/ee6/ew7yyv29zqejeihxdvrqlgi3knc2yk79/800_800_1/salat_cezar.webp');
-
-INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
-    ('Греческий салат', 'Свежие овощи, фета, оливки, оливковое масло', 320.00, 'Салаты', 1, 'https://avatars.mds.yandex.net/i?id=1215c4f9efa0fe8db3d464210e13a500_l-9244753-images-thumbs&n=13');
-
-INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
-    ('Паста Карбонара', 'Спагетти с беконом в сливочном соусе', 420.00, 'Горячее', 1, 'https://images.mid-day.com/images/images/2023/sep/International-Bacon-Day-2023-easy-recipes.jpg');
-
-INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
-    ('Котлета по-киевски', 'Куриная котлета с маслом, картофельное пюре', 390.00, 'Горячее', 1, 'https://masterpiecer-images.s3.yandex.net/58dafa20765c11ee978d363fac71b015:upscaled');
-
-INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
-    ('Рис с овощами', 'Рис с болгарским перцем, морковью и горошком', 250.00, 'Горячее', 1, 'https://avatars.mds.yandex.net/get-shedevrum/14769603/img_7ca51139f62211ef9419e680f4260773/orig');
-
-INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
-    ('Чай черный', 'Черный чай с лимоном', 100.00, 'Напитки', 1, 'https://avatars.mds.yandex.net/get-mpic/11404302/2a0000018c888ef291c64167e4b00dbec99a/orig');
-
-INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
-    ('Кофе американо', 'Американо', 150.00, 'Напитки', 1, 'https://cdn.shopify.com/s/files/1/0660/8571/6215/files/Reduce_Risk_of_Diabetes.jpg?v=1686250060');
-
-INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
-    ('Морс клюквенный', 'Домашний клюквенный морс', 120.00, 'Напитки', 1, 'https://avatars.mds.yandex.net/i?id=28599b2b745491433e6fe961c1189965_l-5305106-images-thumbs&n=13');
-
-INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
-    ('Чизкейк', 'Нью-йоркский чизкейк с ягодным соусом', 280.00, 'Десерты', 1, 'https://avatars.mds.yandex.net/get-sprav-products/11530991/2a0000018ef6668a7779ba03145f7c2dfd5b/XXL');
-
-INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
-    ('Тирамису', 'Классический итальянский десерт', 320.00, 'Десерты', 1, 'https://www.koolinar.ru/all_image/article/4/4391/article-304135e2-a959-4e02-b311-a373f1343ae4_large.jpg');
-
--- Тестовый заказ
-INSERT INTO orders (client_name, client_phone, address, status, total_amount, created_at, updated_at) VALUES
-    ('Иван Петров', '+7 (999) 123-45-67', 'ул. Пушкина, д. 10, кв. 5', 'NEW', 1250.00, GETDATE(), GETDATE());
-
-INSERT INTO order_items (order_id, dish_id, quantity, price)
-SELECT id, 1, 1, 450.00 FROM orders WHERE client_phone = '+7 (999) 123-45-67' AND client_name = 'Иван Петров';
-
-INSERT INTO order_items (order_id, dish_id, quantity, price)
-SELECT id, 10, 2, 100.00 FROM orders WHERE client_phone = '+7 (999) 123-45-67' AND client_name = 'Иван Петров';
-
-INSERT INTO order_items (order_id, dish_id, quantity, price)
-SELECT id, 13, 1, 280.00 FROM orders WHERE client_phone = '+7 (999) 123-45-67' AND client_name = 'Иван Петров';
+-- -- Очищаем таблицы
+-- DELETE FROM order_items;
+-- DELETE FROM orders;
+-- DELETE FROM dishes;
+-- DELETE FROM users;
+--
+-- -- Сброс идентификаторов
+-- DBCC CHECKIDENT ('users', RESEED, 0);
+-- DBCC CHECKIDENT ('dishes', RESEED, 0);
+-- DBCC CHECKIDENT ('orders', RESEED, 0);
+-- DBCC CHECKIDENT ('order_items', RESEED, 0);
+--
+-- -- Добавляем пользователей
+--
+-- INSERT INTO users (username, password, full_name, phone, role, created_at) VALUES
+--     ('admin', '$2a$10$rRy8GSJ5QyqKqZVZQqQqQeQqQqQqQqQqQqQqQqQqQqQqQqQq', 'Администратор', '+7 (999) 111-11-11', 'ADMIN', GETDATE());
+--
+--
+-- INSERT INTO users (username, password, full_name, phone, role, created_at) VALUES
+--     ('cook', '$2a$10$rRy8GSJ5QyqKqZVZQqQqQeQqQqQqQqQqQqQqQqQqQqQqQqQq', 'Повар Иван', '+7 (999) 222-22-22', 'COOK', GETDATE());
+--
+-- INSERT INTO users (username, password, full_name, phone, role, created_at) VALUES
+--     ('courier', '$2a$10$rRy8GSJ5QyqKqZVZQqQqQeQqQqQqQqQqQqQqQqQqQqQqQqQq', 'Курьер Петр', '+7 (999) 333-33-33', 'COURIER', GETDATE());
+--
+-- -- Добавляем блюда с НОВЫМИ ССЫЛКАМИ (Pexels - быстрее)
+-- INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
+--     ('Маргарита', 'Томатный соус, моцарелла, базилик, оливковое масло', 450.00, 'Пицца', 1, 'https://img.freepik.com/premium-photo/pizza-margherita-stone-background_156140-6933.jpg?semt=ais_hybrid&w=740');
+--
+-- INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
+--     ('Пепперони', 'Томатный соус, моцарелла, пепперони, орегано', 550.00, 'Пицца', 1, 'https://avatars.mds.yandex.net/i?id=d7875153a89aefbb8b486cc1d020d5d8_l-5378240-images-thumbs&n=13');
+--
+-- INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
+--     ('Борщ', 'Украинский борщ с говядиной, свеклой, сметаной', 320.00, 'Супы', 1, 'https://avatars.mds.yandex.net/i?id=9b67e56c2ff5f96af31d0b134b971fbf_l-5289313-images-thumbs&n=13');
+--
+-- INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
+--     ('Тыквенный суп', 'Крем-суп из тыквы с имбирем и сливками', 280.00, 'Супы', 1, 'https://avatars.mds.yandex.net/get-shedevrum/14745968/img_a7cf55c883df11ef87143e0b8b3cb0e7/orig');
+--
+-- INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
+--     ('Цезарь с курицей', 'Салат с курицей, салатом романо, пармезаном и соусом цезарь', 380.00, 'Салаты', 1, 'https://fissman.ru/upload/dev2fun.imagecompress/webp/resize_cache/iblock/ee6/ew7yyv29zqejeihxdvrqlgi3knc2yk79/800_800_1/salat_cezar.webp');
+--
+-- INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
+--     ('Греческий салат', 'Свежие овощи, фета, оливки, оливковое масло', 320.00, 'Салаты', 1, 'https://avatars.mds.yandex.net/i?id=1215c4f9efa0fe8db3d464210e13a500_l-9244753-images-thumbs&n=13');
+--
+-- INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
+--     ('Паста Карбонара', 'Спагетти с беконом в сливочном соусе', 420.00, 'Горячее', 1, 'https://images.mid-day.com/images/images/2023/sep/International-Bacon-Day-2023-easy-recipes.jpg');
+--
+-- INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
+--     ('Котлета по-киевски', 'Куриная котлета с маслом, картофельное пюре', 390.00, 'Горячее', 1, 'https://masterpiecer-images.s3.yandex.net/58dafa20765c11ee978d363fac71b015:upscaled');
+--
+-- INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
+--     ('Рис с овощами', 'Рис с болгарским перцем, морковью и горошком', 250.00, 'Горячее', 1, 'https://avatars.mds.yandex.net/get-shedevrum/14769603/img_7ca51139f62211ef9419e680f4260773/orig');
+--
+-- INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
+--     ('Чай черный', 'Черный чай с лимоном', 100.00, 'Напитки', 1, 'https://avatars.mds.yandex.net/get-mpic/11404302/2a0000018c888ef291c64167e4b00dbec99a/orig');
+--
+-- INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
+--     ('Кофе американо', 'Американо', 150.00, 'Напитки', 1, 'https://cdn.shopify.com/s/files/1/0660/8571/6215/files/Reduce_Risk_of_Diabetes.jpg?v=1686250060');
+--
+-- INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
+--     ('Морс клюквенный', 'Домашний клюквенный морс', 120.00, 'Напитки', 1, 'https://avatars.mds.yandex.net/i?id=28599b2b745491433e6fe961c1189965_l-5305106-images-thumbs&n=13');
+--
+-- INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
+--     ('Чизкейк', 'Нью-йоркский чизкейк с ягодным соусом', 280.00, 'Десерты', 1, 'https://avatars.mds.yandex.net/get-sprav-products/11530991/2a0000018ef6668a7779ba03145f7c2dfd5b/XXL');
+--
+-- INSERT INTO dishes (name, description, price, category, available, image_url) VALUES
+--     ('Тирамису', 'Классический итальянский десерт', 320.00, 'Десерты', 1, 'https://www.koolinar.ru/all_image/article/4/4391/article-304135e2-a959-4e02-b311-a373f1343ae4_large.jpg');
+--
+-- -- Добавляем тестовый заказ
+-- INSERT INTO orders (client_name, client_phone, address, status, total_amount, created_at, updated_at) VALUES
+--     ('Иван Петров', '+7 (999) 123-45-67', 'ул. Пушкина, д. 10, кв. 5', 'NEW', 1250.00, GETDATE(), GETDATE());
+--
+-- -- Добавляем позиции заказа
+-- INSERT INTO order_items (order_id, dish_id, quantity, price)
+-- SELECT id, 1, 1, 450.00 FROM orders WHERE client_phone = '+7 (999) 123-45-67' AND client_name = 'Иван Петров';
+--
+-- INSERT INTO order_items (order_id, dish_id, quantity, price)
+-- SELECT id, 10, 2, 100.00 FROM orders WHERE client_phone = '+7 (999) 123-45-67' AND client_name = 'Иван Петров';
+--
+-- INSERT INTO order_items (order_id, dish_id, quantity, price)
+-- SELECT id, 13, 1, 280.00 FROM orders WHERE client_phone = '+7 (999) 123-45-67' AND client_name = 'Иван Петров';

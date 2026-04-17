@@ -17,18 +17,55 @@
 </nav>
 
 <div class="container mt-4">
-    <h2 class="mb-4">Новые заказы (нужно готовить)</h2>
-    <div class="row" th:if="${not #lists.isEmpty(confirmedOrders)}">
-        <div class="col-md-6 mb-4" th:each="order : ${confirmedOrders}">
+    <h2 class="mb-4">Заказы на самовывоз (принятые)</h2>
+    <div class="row" th:if="${not #lists.isEmpty(acceptedOrders)}">
+        <div class="col-md-6 mb-4" th:each="order : ${acceptedOrders}">
             <div class="card border-primary">
                 <div class="card-header bg-primary text-white">
                     <h5 class="mb-0">Заказ #<span th:text="${order.id}">1</span></h5>
                 </div>
                 <div class="card-body">
                     <p><strong>Клиент:</strong> <span th:text="${order.clientName}">Иван</span></p>
+                    <p><strong>Телефон:</strong> <span th:text="${order.clientPhone}">+7...</span></p>
                     <p><strong>Время заказа:</strong> <span th:text="${#temporals.format(order.createdAt, 'HH:mm')}">12:00</span></p>
+                    <span class="badge bg-primary">Самовывоз</span>
 
-                    <h6>Состав заказа:</h6>
+                    <h6 class="mt-3">Состав заказа:</h6>
+                    <ul class="list-group mb-3">
+                        <li class="list-group-item" th:each="item : ${order.items}">
+                            <span th:text="${item.dish.name}">Пицца</span> x
+                            <span th:text="${item.quantity}">1</span>
+                        </li>
+                    </ul>
+
+                    <form th:action="@{'/cook/order/' + ${order.id} + '/start-cooking'}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-primary">
+                            👨‍🍳 Начать готовить
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${#lists.isEmpty(acceptedOrders)}" class="alert alert-info">
+        Нет заказов на самовывоз
+    </div>
+
+    <h2 class="mb-4 mt-4">Заказы на доставку (подтвержденные)</h2>
+    <div class="row" th:if="${not #lists.isEmpty(confirmedOrders)}">
+        <div class="col-md-6 mb-4" th:each="order : ${confirmedOrders}">
+            <div class="card border-info">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Заказ #<span th:text="${order.id}">1</span></h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Клиент:</strong> <span th:text="${order.clientName}">Иван</span></p>
+                    <p><strong>Адрес:</strong> <span th:text="${order.address}">ул. Пушкина</span></p>
+                    <p><strong>Время заказа:</strong> <span th:text="${#temporals.format(order.createdAt, 'HH:mm')}">12:00</span></p>
+                    <span class="badge bg-success">Доставка</span>
+
+                    <h6 class="mt-3">Состав заказа:</h6>
                     <ul class="list-group mb-3">
                         <li class="list-group-item" th:each="item : ${order.items}">
                             <span th:text="${item.dish.name}">Пицца</span> x
@@ -47,7 +84,7 @@
     </div>
 
     <div th:if="${#lists.isEmpty(confirmedOrders)}" class="alert alert-info">
-        Нет новых заказов
+        Нет заказов на доставку
     </div>
 
     <h2 class="mb-4 mt-4">Готовится</h2>

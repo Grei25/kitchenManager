@@ -87,6 +87,34 @@ public class OrderServiceImpl implements OrderService {
         }
         return order;
     }
+
+    @Transactional
+    public Order acceptOrder(Long orderId) {
+        Order order = getOrderById(orderId);
+        if (order != null) {
+            if (Boolean.TRUE.equals(order.getPickup())) {
+                order.setStatus(OrderStatus.ACCEPTED);
+            } else {
+                order.setStatus(OrderStatus.CONFIRMED);
+            }
+            order = orderRepository.save(order);
+        }
+        return order;
+    }
+
+    @Transactional
+    public Order completeOrder(Long orderId) {
+        Order order = getOrderById(orderId);
+        if (order != null) {
+            if (Boolean.TRUE.equals(order.getPickup())) {
+                order.setStatus(OrderStatus.COMPLETED);
+            } else {
+                order.setStatus(OrderStatus.DELIVERED);
+            }
+            order = orderRepository.save(order);
+        }
+        return order;
+    }
     @Override
     public long countByStatus(OrderStatus status) {
         return orderRepository.countByStatus(status);

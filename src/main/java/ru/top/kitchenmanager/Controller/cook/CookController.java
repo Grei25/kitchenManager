@@ -18,9 +18,11 @@ public class CookController {
 
     @GetMapping("/orders")
     public String cookingOrders(Model model) {
+        List<Order> acceptedOrders = orderService.getOrdersByStatus(OrderStatus.ACCEPTED);
         List<Order> confirmedOrders = orderService.getOrdersByStatus(OrderStatus.CONFIRMED);
         List<Order> cookingOrders = orderService.getOrdersByStatus(OrderStatus.COOKING);
 
+        model.addAttribute("acceptedOrders", acceptedOrders);
         model.addAttribute("confirmedOrders", confirmedOrders);
         model.addAttribute("cookingOrders", cookingOrders);
         model.addAttribute("orders", orderService.getOrdersForCook());
